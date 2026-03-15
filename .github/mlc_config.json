@@ -1,0 +1,8 @@
+{
+  "ignorePatterns": [
+    { "pattern": "^https://github.com/yunbow/" }
+  ],
+  "timeout": "10s",
+  "retryOn429": true,
+  "aliveStatusCodes": [200, 206, 301, 302, 403]
+}

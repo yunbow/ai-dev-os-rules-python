@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# AI coding tools (user-local config — not part of this repo)
+.claude/
+CLAUDE.md
+.kiro/
+AGENTS.md
+.cursor/
+.cursorrules

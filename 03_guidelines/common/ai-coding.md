@@ -163,7 +163,32 @@ If AI consistently fails to follow a specific guideline:
 3. Add the rule to the project's checklist template
 4. If still failing, consider adding a pre-commit hook or linter rule for automated enforcement
 
-## 5.4 Rule Suppression (Escape Hatch)
+## 5.4 How to Write Effective Guidelines (Benchmark-Validated)
+
+[Benchmark data](https://github.com/yunbow/ai-dev-os-benchmark) shows that guideline **specificity** — not quantity — determines AI compliance. Vague rules are ignored; specific rules achieve 100% compliance.
+
+### Rules for writing rules:
+
+| Principle | Bad (0% compliance) | Good (100% compliance) |
+|-----------|---------------------|------------------------|
+| **Name the exact method** | "Validate date ranges" | "MUST use `@field_validator` to check `due_date > datetime.now()`" |
+| **Name the exact pattern** | "Use exhaustive checks" | "MUST use `assert_never(unreachable)` in `match` default case" |
+| **Provide decision criteria** | "Use async where appropriate" | "MUST use `run_in_executor` for blocking calls > 100ms: file I/O, subprocess, sync HTTP" |
+| **Show the anti-pattern** | "Use proper naming" | "❌ `handle_delete` ✅ `handle_task_delete` (MUST include noun)" |
+| **Use MUST/SHOULD keywords** | "Consider using..." | "MUST validate on both client and server using the same Pydantic schema" |
+
+### What NOT to include:
+
+* General best practices the AI already knows
+* Large Before/After code sections (no improvement in benchmarks)
+* YAML frontmatter or structured metadata (no improvement in benchmarks)
+* Abstract principles without concrete implementation guidance
+
+### The "generate → check → fix" workflow:
+
+Load 3-5 project-specific files in context. AI generates code. Run post-generation check with a specific checklist. AI fixes violations. This workflow scores 96.9/100 in benchmarks.
+
+## 5.5 Rule Suppression (Escape Hatch)
 When a specific guideline rule is not applicable to a particular module or file, suppress it explicitly rather than ignoring it silently:
 
 * **Project-level suppression**: Add a `project-specific/` guideline that overrides the rule for specific directories or modules. The Specificity Cascade ensures project-specific rules take precedence over common rules.

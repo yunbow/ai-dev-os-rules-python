@@ -188,6 +188,7 @@ git commit -m "chore: pin ai-dev-os to v1.2.0"
 | [plugin-kiro](https://github.com/yunbow/ai-dev-os-plugin-kiro) | Kiro 向けの Steering Rules と Hooks |
 | [plugin-cursor](https://github.com/yunbow/ai-dev-os-plugin-cursor) | ガイドライン駆動開発のための Cursor Rules (.mdc) |
 | [cli](https://github.com/yunbow/ai-dev-os-cli) | セットアップ自動化 — `npx ai-dev-os init` |
+| [benchmark](https://github.com/yunbow/ai-dev-os-benchmark) | 定量ベンチマーク — ガイドラインの品質影響データ |
 
 ## ライセンス
 

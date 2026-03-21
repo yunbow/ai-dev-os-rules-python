@@ -6,6 +6,7 @@ This document outlines how to manage **Types** and **Validation** in a unified m
 # 1. Core Policy
 * Build a structure where types naturally synchronize in the order **Pydantic → SQLAlchemy → Python type hints**.
 * API schemas can be exported from **Pydantic → JSON Schema (for AI APIs, etc.)** for external sharing.
+* MUST validate on BOTH client (frontend) and server using the SAME Pydantic schema exported as JSON Schema. Never rely on server-side validation alone.
 
 ---
 
@@ -13,7 +14,7 @@ This document outlines how to manage **Types** and **Validation** in a unified m
 
 Business logic rules that belong in Pydantic schemas (not just format validation):
 
-* **Cross-field constraints**: e.g., `end_date` must be after `start_date`, `max_price` >= `min_price`
+* **Date range constraints**: MUST validate that future-facing dates (e.g., `due_date`, `expires_at`) are in the future using `@field_validator`. MUST validate that `end_date` is after `start_date`
 * **Domain value boundaries**: e.g., quantity must be 1-999, discount percentage 0-100
 * **Conditional required fields**: e.g., if `payment_method` is "card", `card_number` is required
 * **Enumerated state transitions**: e.g., order status can only move from "pending" → "confirmed" → "shipped"

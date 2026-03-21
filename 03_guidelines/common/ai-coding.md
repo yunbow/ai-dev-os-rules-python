@@ -57,7 +57,7 @@ The static context (8-10 guideline files referenced in CLAUDE.md) typically adds
 ## 2.2 Task Scoping
 * MUST break large tasks into small, focused requests (one file or one function per request)
 * MUST specify the exact file path and function name when requesting changes to existing code
-* SHOULD provide a Before/After example when explaining a pattern you want the AI to follow
+* SHOULD keep code examples minimal (1-3 lines inline ❌/✅). Avoid adding large Before/After sections — benchmark data shows they cause attention dilution without improving compliance
 
 ## 2.3 Effective Prompting Patterns
 * **Do**: "Add input validation using Pydantic BaseModel as defined in validation.md"
@@ -158,9 +158,10 @@ After every code review where AI-generated code was corrected:
 
 ## 5.3 When AI Cannot Follow a Rule
 If AI consistently fails to follow a specific guideline:
-1. Add a concrete code example (Before/After) to the guideline
-2. Add the rule to the project's checklist template
-3. If still failing, consider adding a pre-commit hook or linter rule for automated enforcement
+1. Clarify the rule wording — make it more specific and actionable
+2. Add a minimal inline code example (❌/✅, 1-3 lines) if the rule is ambiguous
+3. Add the rule to the project's checklist template
+4. If still failing, consider adding a pre-commit hook or linter rule for automated enforcement
 
 ## 5.4 Rule Suppression (Escape Hatch)
 When a specific guideline rule is not applicable to a particular module or file, suppress it explicitly rather than ignoring it silently:

@@ -157,6 +157,19 @@ async def get_user_projects(
 - **Production / multiple instances**: Redis
 - **Standard headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`
 
+## MUST: Apply Rate Limiting to ALL Auth Endpoints
+
+MUST apply rate limiting to ALL endpoints that handle authentication — including registration, login, password reset request, and password reset. Apply per-IP limits before any auth processing:
+
+```python
+@router.post("/auth/register")
+async def register(request: Request, data: RegisterInput):
+    # ✅ MUST: Rate limit before auth processing
+    client_ip = request.client.host
+    await check_rate_limit(f"auth:register:{client_ip}", max_requests=5, window_seconds=60)
+    # ... rest of registration logic
+```
+
 ---
 
 # 3.3 Webhook Security

@@ -59,6 +59,27 @@ class Theme(str, Enum):
 
 Use `str, Enum` (or `StrEnum` in Python 3.11+) so values are JSON-serializable. Use `Literal` types only when a simple union of strings suffices and no iteration or membership checks are needed.
 
+## 2.4 Exhaustive Checks on Union Types
+
+MUST handle all cases when matching on Enum or Literal types. Use `assert_never` (Python 3.11+) or `typing_extensions.assert_never` to ensure exhaustiveness at type-check time:
+
+```python
+from typing import assert_never
+
+def get_status_label(status: TaskStatus) -> str:
+    match status:
+        case TaskStatus.TODO:
+            return "To Do"
+        case TaskStatus.IN_PROGRESS:
+            return "In Progress"
+        case TaskStatus.DONE:
+            return "Done"
+        case _ as unreachable:
+            assert_never(unreachable)
+```
+
+This applies to all Enum types, Literal unions, and action type dispatchers.
+
 # 3. Lint Standards
 
 ## 3.1 Rule Sets

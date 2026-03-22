@@ -1,6 +1,7 @@
 {
   "ignorePatterns": [
-    { "pattern": "^https://github.com/yunbow/" }
+    { "pattern": "^https://github.com/yunbow/" },
+    { "pattern": "^\\./?.*\\.md$" }
   ],
   "timeout": "10s",
   "retryOn429": true,

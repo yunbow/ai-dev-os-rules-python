@@ -1,5 +1,6 @@
 # AI Dev OS Rules — Python
 
+[![Lint & Link Check](https://github.com/yunbow/ai-dev-os-rules-python/actions/workflows/lint.yml/badge.svg)](https://github.com/yunbow/ai-dev-os-rules-python/actions/workflows/lint.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 > 4-layer guidelines for Python projects (FastAPI, Flask, Typer CLI, etc.).

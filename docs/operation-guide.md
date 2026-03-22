@@ -22,28 +22,33 @@ This document defines the operational rules for updating ai-dev-os.
 ### 1.2 Rules for Updates
 
 **Common to all sections:**
+
 - Do not include project-specific descriptions (specific service names, specific domain terminology)
 - When concrete examples are needed, use generic examples with placeholders such as `{domain}`, `{Payment Service}`, etc.
 - After changes, update the directory structure in `README.md` to reflect the latest state
 
 **Language Policy:**
+
 - `01_philosophy/` and `02_decision-criteria/` contain **sample content in English**. After cloning, rewrite these in your **native language** — abstract thinking and decision-making frameworks are best expressed in the native language to preserve nuance
 - All other sections (`03_guidelines/`, `04_ai-prompts/`, `templates/`) must be written in **English** — for AI compatibility and international accessibility
 - Multilingual operation guides are maintained in `docs/i18n/` (JA, ZH, KO, ES)
 - When adding or updating content, always follow this language policy
 
 **Updating `01_philosophy/`:**
+
 - The repository contains sample content. After cloning, rewrite in your **native language**
 - When adding new principles, verify there are no contradictions with existing principles
 - Deletions and major changes are treated as MAJOR versions
 - Also verify consistency with `02_decision-criteria/` and below
 
 **Updating `02_decision-criteria/`:**
+
 - The repository contains sample content. After cloning, rewrite in your **native language**
 - When changing decision criteria, check whether the corresponding sections in `03_guidelines/` also need updates
 - When adding new decision axes, verify whether corresponding guidelines exist
 
 **Updating `03_guidelines/`:**
+
 - Be careful not to duplicate content between `common/` and `frameworks/`
 - Periodically review whether content that should be shared is written only in framework-specific files
 - See "2. Adding Framework Guidelines" for details
@@ -51,8 +56,8 @@ This document defines the operational rules for updating ai-dev-os.
 **Cross-Repository Sync for `03_guidelines/common/`:**
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) for the full sync procedure, file-by-file sync table, and quick diff command.
 
-
 **Updating `templates/`:**
+
 - Templates are for new projects. Do not auto-apply to existing projects
 - Configuration files (pyproject.toml, ruff config, etc.) must be consistent with `03_guidelines/` standards
 
@@ -73,7 +78,7 @@ Conditions for adding new framework guidelines:
 
 ### 2.2 Directory Structure
 
-```
+```text
 03_guidelines/frameworks/{framework-name}/
 ├── overview.md            # Technology stack definition (required)
 ├── project-structure.md   # Directory structure (required)
@@ -120,12 +125,13 @@ Relationship with corresponding `common/` guidelines:
 | Framework-specific concepts | Create only on the framework side |
 
 **File naming rules:**
+
 - Use the same name when corresponding to `common/` (e.g., `common/security.md` → `python-cli/security.md`)
 - Use descriptive names for framework-specific concepts (e.g., `dependency-injection.md`, `cli-commands.md`)
 
 #### Step 4: Create Templates
 
-```
+```text
 templates/{framework-name}/
 ├── CLAUDE.md.template     # CLAUDE.md template (required)
 ├── submodule-setup.sh     # Setup script (recommended)
@@ -140,17 +146,19 @@ templates/{framework-name}/
 
 ### 2.4 Responsibility Separation Principle with common/
 
-```
+```text
 common/          → "What to do" (language/FW-independent rules)
 frameworks/xxx/  → "How to implement" (FW-specific implementation patterns)
 ```
 
-**Example: Validation**
+### Example: Validation
+
 - `common/validation.md` → "Server-side validation is required" "Pydantic recommended"
 - `frameworks/python-cli/validation.md` → "Pydantic model validation with Typer argument parsing"
 - `frameworks/fastapi/validation.md` → "Request body validation with Pydantic models and dependency injection"
 
-**Example: Error Handling**
+### Example: Error Handling
+
 - `common/error-handling.md` → "Error classification" "Principles for user display"
 - `frameworks/python-cli/error-handling.md` → "Custom exception hierarchy with Typer exit codes"
 

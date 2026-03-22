@@ -7,10 +7,12 @@ Thank you for your interest in contributing!
 ## How to Contribute
 
 ### Reporting Issues
+
 - Use [GitHub Issues](https://github.com/yunbow/ai-dev-os-rules-python/issues)
 - Specify which guideline file and rule is affected
 
 ### Pull Requests
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -37,6 +39,7 @@ The `03_guidelines/common/` directory is shared across rules repositories. When 
 4. Exception: `code.md` may have language-specific examples — sync the rules, adjust examples
 
 **Quick check for drift:**
+
 ```bash
 diff -rq 03_guidelines/common/ ../ai-dev-os-rules-typescript/03_guidelines/common/
 ```

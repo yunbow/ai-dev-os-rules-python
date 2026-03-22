@@ -28,7 +28,7 @@ npx ai-dev-os init --rules python --plugin claude-code
 <details>
 <summary>Manual setup</summary>
 
-**Add as submodule**
+### Add as submodule
 
 ```bash
 cd /path/to/your-project
@@ -36,17 +36,17 @@ git submodule add https://github.com/yunbow/ai-dev-os-rules-python.git docs/ai-d
 git submodule update --init
 ```
 
-**Set up using templates (for Python CLI)**
+### Set up using templates (for Python CLI)
 
 ```bash
 bash docs/ai-dev-os/templates/python-cli/submodule-setup.sh
 ```
 
-**Edit CLAUDE.md**
+### Edit CLAUDE.md
 
 Copy `templates/python-cli/CLAUDE.md.template` to `./CLAUDE.md` and fill in your project name and project-specific guidelines.
 
-**Update submodule**
+### Update submodule
 
 ```bash
 git submodule update --remote docs/ai-dev-os
@@ -78,7 +78,7 @@ When rules conflict, **lower number wins**.
 <details>
 <summary>Directory Structure</summary>
 
-```
+```text
 ai-dev-os/
 ├── docs/
 │   ├── operation-guide.md        # Operation & Contribution Guide
@@ -132,7 +132,7 @@ ai-dev-os/
 
 For update policies, framework addition steps, and versioning details, see **[docs/operation-guide.md](./docs/operation-guide.md)**.
 
-**Update Frequency Guide**
+### Update Frequency Guide
 
 | Section | Frequency | Impact Scope |
 |---------|-----------|--------------|
@@ -142,7 +142,7 @@ For update policies, framework addition steps, and versioning details, see **[do
 | `03_guidelines/frameworks/` | High | Projects using the relevant FW only |
 | `templates/` | Medium | New projects only |
 
-**Adding Frameworks**
+### Adding Frameworks
 
 To add a new framework (e.g., FastAPI, Flask, Django):
 

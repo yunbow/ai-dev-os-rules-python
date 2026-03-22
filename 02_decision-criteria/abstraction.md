@@ -1,4 +1,5 @@
 $NOTE
+
 # Decision Criteria for Generalization and Abstraction
 
 Criteria for deciding whether to "extract" or "leave as-is" when you find code duplication.
@@ -7,7 +8,7 @@ Criteria for deciding whether to "extract" or "leave as-is" when you find code d
 
 ## Fundamental Principle
 
-**"Premature abstraction leads to wrong abstraction."**
+> *"Premature abstraction leads to wrong abstraction."*
 
 Abstraction increases the cost of understanding. It only has value when "enough reuse" exists — meaning 3+ call sites with genuinely identical logic, not just superficially similar code. Two similar-looking functions that evolve independently don't justify abstraction.
 

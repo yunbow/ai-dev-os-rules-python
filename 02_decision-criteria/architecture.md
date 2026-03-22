@@ -1,4 +1,5 @@
 $NOTE
+
 # Architecture Decision Criteria
 
 Defines the selection criteria for sync vs async, API design, data access patterns, dependency injection, and project structure.
@@ -143,7 +144,7 @@ Defines the selection criteria for sync vs async, API design, data access patter
 
 ### Test Target Priority
 
-```
+```text
 1. Authentication/authorization (sessions, IDOR)     <- Highest: a flaw here means full data breach
 2. Payment processing                                <- Financial loss is immediate and concrete
 3. DB operations + API endpoints                     <- Data corruption is hard to reverse

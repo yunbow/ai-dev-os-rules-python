@@ -2,7 +2,8 @@
 
 This document defines the directory policies and architecture guidelines for FastAPI applications.
 
-# 1. Overall Principles
+## 1. Overall Principles
+
 - Adopt **vertical slicing (feature-based) as the base structure**
   → Group router / service / repository / schema / model per feature
 - **Horizontal slicing is limited to shared functionality only**
@@ -10,9 +11,9 @@ This document defines the directory policies and architecture guidelines for Fas
 
 ---
 
-# 2. Directory Structure
+## 2. Directory Structure
 
-```
+```text
 src/
 ├─ app/                     # Application entry point
 │  ├─ main.py               # FastAPI app factory, router mounting
@@ -57,7 +58,7 @@ src/
    └─ core/
 ```
 
-# 3. Layer Responsibilities
+## 3. Layer Responsibilities
 
 | Layer | Responsibility | Dependencies |
 |-------|---------------|-------------|
@@ -68,17 +69,18 @@ src/
 | **models** | Database table definitions (SQLAlchemy) | — |
 
 ## 3.1 Dependency Direction
-```
+
+```text
 router → service → repository → models
                  → lib (external)
 schemas (used by router and service, but defines no dependencies)
 ```
 
-* MUST NOT import router from service
-* MUST NOT import service from repository
-* MUST NOT import features from each other directly — use events or shared service
+- MUST NOT import router from service
+- MUST NOT import service from repository
+- MUST NOT import features from each other directly — use events or shared service
 
-# 4. File Naming Conventions
+## 4. File Naming Conventions
 
 | Pattern | Convention | Example |
 |---------|-----------|---------|
@@ -89,18 +91,18 @@ schemas (used by router and service, but defines no dependencies)
 | Model file | `models.py` (SQLAlchemy models) | `features/billing/models.py` |
 | Test file | `test_{feature}.py` | `tests/features/test_billing.py` |
 
-# 5. Import Rules
+## 5. Import Rules
 
-* MUST use absolute imports from the project root
-* MUST NOT use relative imports across features
-* MUST NOT use wildcard imports (`from x import *`)
+- MUST use absolute imports from the project root
+- MUST NOT use relative imports across features
+- MUST NOT use wildcard imports (`from x import *`)
 
 ```python
-# GOOD
+## GOOD
 from src.features.billing.service import BillingService
 from src.core.database import get_session
 
-# BAD
+## BAD
 from ..billing.service import BillingService  # relative cross-feature
 from src.features.billing.service import *     # wildcard
 ```

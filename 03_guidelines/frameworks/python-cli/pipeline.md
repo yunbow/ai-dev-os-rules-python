@@ -4,17 +4,18 @@ This document defines how to design multi-step processing pipelines for CLI tool
 
 ---
 
-# 1. Pipeline Architecture
+## 1. Pipeline Architecture
 
 ## 1.1 Core Concepts
 
 A pipeline is a sequence of **steps** that transform input data into output:
 
-```
+```text
 Input → [Step 1: Collect] → [Step 2: Process] → [Step 3: Transform] → [Step 4: Output] → Result
 ```
 
 Each step:
+
 - Has a **name** (identifier) and **label** (display text)
 - Receives a **config** and **work directory**
 - Reads input from the work directory (previous step's output)
@@ -76,11 +77,11 @@ class PipelineOrchestrator:
 
 ---
 
-# 2. Work Directory Structure
+## 2. Work Directory Structure
 
 Each pipeline run uses a dedicated work directory for intermediate files:
 
-```
+```text
 .work/
 ├─ pipeline-state.json       # Pipeline execution state
 ├─ cache-meta.json           # Cache metadata
@@ -96,6 +97,7 @@ Each pipeline run uses a dedicated work directory for intermediate files:
 ```
 
 ### Rules
+
 - Each step writes to its own subdirectory or well-known file
 - Steps read from previous step's output location
 - The work directory is the **single source of truth** for pipeline state
@@ -103,7 +105,7 @@ Each pipeline run uses a dedicated work directory for intermediate files:
 
 ---
 
-# 3. State Management
+## 3. State Management
 
 ## 3.1 Pipeline State
 
@@ -148,7 +150,7 @@ def run(self, resume_modules: list[str] | None = None) -> list[StepResult]:
 
 ---
 
-# 4. Caching
+## 4. Caching
 
 ## 4.1 Cache Strategy
 
@@ -192,7 +194,7 @@ def parse_ttl(ttl: str) -> int:
 
 ---
 
-# 5. Error Handling in Pipelines
+## 5. Error Handling in Pipelines
 
 ## 5.1 Error Wrapping
 
@@ -231,7 +233,7 @@ except Exception as e:
 Validate the output of each step before the next step consumes it:
 
 ```python
-# Before step 2
+## Before step 2
 raw_data = json.loads(collected_path.read_text())
 data, warnings = validate_collected_data(raw_data)
 for w in warnings:
@@ -240,7 +242,7 @@ for w in warnings:
 
 ---
 
-# 6. Manual Review Points
+## 6. Manual Review Points
 
 For pipelines that benefit from human review of intermediate results:
 
@@ -259,13 +261,13 @@ if config.pause and sys.stdin.isatty():
 
 ---
 
-# 7. Progress Reporting
+## 7. Progress Reporting
 
 Display step-based progress during execution:
 
 ```python
 logger.info(f"[{step_num}/{total_steps}] {step.label}...")
-# Output: [2/4] Preprocessing...
+## Output: [2/4] Preprocessing...
 ```
 
 After completion, show a summary:
@@ -278,7 +280,7 @@ for r in state.results:
 
 ---
 
-# 8. Summary
+## 8. Summary
 
 - **Pipeline = ordered sequence of independent steps**
 - **Work directory is the single source of truth** for all intermediate data

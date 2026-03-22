@@ -20,37 +20,44 @@
 ### 1.2 更新规则
 
 **所有部分通用：**
+
 - 不包含项目特定的描述（特定服务名称、特定领域术语）
 - 需要具体示例时，使用 `{domain}`、`{Payment Service}` 等占位符的通用示例
 - 变更后，将 `README.md` 的目录结构更新为最新状态
 
 **语言政策：**
+
 - `01_philosophy/` 和 `02_decision-criteria/` 包含**英语示例内容**——克隆后请**用母语重写**（抽象思维和决策框架用母语表达能保留细微差别）
 - 其他所有部分（`03_guidelines/`、`04_ai-prompts/`、`templates/`）必须使用**英语**编写——为了 AI 兼容性和国际可访问性
 - 多语言运营指南维护在 `docs/i18n/`（JA、ZH、KO、ES）
 - 添加或更新内容时，始终遵循此语言政策
 
 **更新 `01_philosophy/`：**
+
 - 包含示例内容（英语）。克隆后请**用母语重写**
 - 添加新原则时，验证与现有原则没有矛盾
 - 删除和重大变更视为 MAJOR 版本
 - 同时验证与 `02_decision-criteria/` 及以下部分的一致性
 
 **更新 `02_decision-criteria/`：**
+
 - 包含示例内容（英语）。克隆后请**用母语重写**
 - 变更决策标准时，检查 `03_guidelines/` 的对应部分是否也需要更新
 - 添加新的决策轴时，验证是否存在对应的指南
 
 **更新 `03_guidelines/`：**
+
 - 注意避免 `common/` 和 `frameworks/` 之间的内容重复
 - 定期检查应共享的内容是否仅写在框架特定文件中
 - 详见"2. 添加框架指南"
 
 **更新 `04_ai-prompts/`：**
+
 - 验证提示中引用的指南路径确实存在
 - `skills/` 必须保持 Claude Code SKILL.md 格式（frontmatter + procedures）
 
 **更新 `templates/`：**
+
 - 模板用于新项目。不要自动应用到现有项目
 - 配置文件（pyproject.toml、ruff 配置等）必须与 `03_guidelines/` 标准一致
 
@@ -71,7 +78,7 @@
 
 ### 2.2 目录结构
 
-```
+```text
 03_guidelines/frameworks/{framework-name}/
 ├── overview.md            # 技术栈定义（必需）
 ├── project-structure.md   # 目录结构（必需）
@@ -118,12 +125,13 @@
 | 框架特定概念 | 仅在框架侧创建 |
 
 **文件命名规则：**
+
 - 与 `common/` 对应时使用相同名称（例如 `common/security.md` → `python-cli/security.md`）
 - 框架特定概念使用描述性名称（例如 `dependency-injection.md`、`cli-commands.md`）
 
 #### Step 4: 创建模板
 
-```
+```text
 templates/{framework-name}/
 ├── CLAUDE.md.template     # CLAUDE.md 模板（必需）
 ├── submodule-setup.sh     # 设置脚本（推荐）
@@ -138,17 +146,19 @@ templates/{framework-name}/
 
 ### 2.4 与 common/ 的职责分离原则
 
-```
+```text
 common/          → "做什么"（与语言/框架无关的规则）
 frameworks/xxx/  → "如何实现"（框架特定的实现模式）
 ```
 
-**示例：验证**
+### 示例：验证
+
 - `common/validation.md` → "必须进行服务端验证" "推荐使用 Pydantic"
 - `frameworks/python-cli/validation.md` → "使用 Pydantic 模型与 Typer 参数解析的验证模式"
 - `frameworks/fastapi/validation.md` → "使用 Pydantic 模型与依赖注入的请求体验证"
 
-**示例：错误处理**
+### 示例：错误处理
+
 - `common/error-handling.md` → "错误分类" "用户展示原则"
 - `frameworks/python-cli/error-handling.md` → "自定义异常层级与 Typer 退出码"
 
@@ -187,6 +197,7 @@ frameworks/xxx/  → "如何实现"（框架特定的实现模式）
 - 废除或反转现有规则
 
 **移动文件时：**
+
 1. 在旧路径留下一行重定向文件："Moved to: `new-path`"
 2. 在下一个 MAJOR 版本中移除重定向文件
 

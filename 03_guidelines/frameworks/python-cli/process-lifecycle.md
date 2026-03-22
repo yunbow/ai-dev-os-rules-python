@@ -4,7 +4,7 @@ This document defines how to manage exit codes, signal handling, stdin/stdout, a
 
 ---
 
-# 1. Exit Codes
+## 1. Exit Codes
 
 ## 1.1 Standard Exit Codes
 
@@ -17,7 +17,7 @@ This document defines how to manage exit codes, signal handling, stdin/stdout, a
 ## 1.2 Implementation
 
 ```python
-# In CLI action handler
+## In CLI action handler
 @app.command()
 def analyze(...) -> None:
     try:
@@ -33,13 +33,14 @@ def analyze(...) -> None:
 ```
 
 ## 1.3 Rules
+
 - **Always exit explicitly** — do not let the process hang
 - **Use `raise typer.Exit()` or `raise SystemExit()` only in the CLI layer** — core logic raises exceptions, CLI layer decides exit code
 - **Never use `sys.exit()` in library code** — it prevents proper cleanup and makes code untestable
 
 ---
 
-# 2. Signal Handling
+## 2. Signal Handling
 
 ## 2.1 Graceful Shutdown
 
@@ -83,7 +84,7 @@ def analyze(...) -> None:
 
 ---
 
-# 3. Error Hierarchy
+## 3. Error Hierarchy
 
 ## 3.1 Base Error Class
 
@@ -128,7 +129,7 @@ def format_error(error: Exception, verbose: bool = False) -> str:
 
 ---
 
-# 4. Standard I/O
+## 4. Standard I/O
 
 ## 4.1 Channel Separation
 
@@ -171,7 +172,7 @@ structlog.configure(
 
 ---
 
-# 5. Entry Point
+## 5. Entry Point
 
 ## 5.1 pyproject.toml Configuration
 
@@ -194,12 +195,12 @@ my-tool = "my_tool.cli.main:app"
 
 ```python
 #!/usr/bin/env python3
-# src/my_tool/cli/main.py
+## src/my_tool/cli/main.py
 import typer
 
 app = typer.Typer()
 
-# Register commands...
+## Register commands...
 
 if __name__ == "__main__":
     app()
@@ -208,16 +209,16 @@ if __name__ == "__main__":
 ## 5.3 Development Runner
 
 ```bash
-# Run directly during development
+## Run directly during development
 uv run my-tool analyze --url https://example.com
 
-# Or via python -m
+## Or via python -m
 python -m my_tool.cli.main analyze --url https://example.com
 ```
 
 ---
 
-# 6. Resource Cleanup
+## 6. Resource Cleanup
 
 ## 6.1 Context Manager Pattern
 
@@ -234,7 +235,7 @@ def managed_browser():
     finally:
         browser.close()
 
-# Usage
+## Usage
 with managed_browser() as browser:
     collect_data(browser, config)
 ```
@@ -266,7 +267,7 @@ async def managed_session():
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **Exit codes: 0 (success), 1 (partial failure), 2 (fatal)**
 - **Handle SIGINT/SIGTERM** for graceful shutdown

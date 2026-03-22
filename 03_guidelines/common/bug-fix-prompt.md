@@ -6,7 +6,7 @@ A prompt template for systematically investigating and fixing bugs.
 
 ## Prompt
 
-```
+```text
 Please investigate and fix the following bug.
 
 ## Investigation Procedure

@@ -1,15 +1,16 @@
 # Middleware Guidelines
 
-# 1. Middleware Stack
+## 1. Middleware Stack
 
 ## 1.1 Recommended Order
+
 Middleware is executed in reverse order of registration (last registered = outermost). Register in this order:
 
 ```python
-# app/main.py
+## app/main.py
 app = FastAPI()
 
-# 1. CORS (outermost — must handle preflight before anything else)
+## 1. CORS (outermost — must handle preflight before anything else)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -18,17 +19,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 2. Request ID (early — needed by all subsequent middleware and handlers)
+## 2. Request ID (early — needed by all subsequent middleware and handlers)
 app.add_middleware(RequestIDMiddleware)
 
-# 3. Logging (after request ID is set)
+## 3. Logging (after request ID is set)
 app.add_middleware(LoggingMiddleware)
 
-# 4. Rate limiting (before business logic)
+## 4. Rate limiting (before business logic)
 app.add_middleware(RateLimitMiddleware)
 ```
 
 ## 1.2 Custom Middleware Pattern
+
 * MUST use the `BaseHTTPMiddleware` pattern or pure ASGI middleware
 * MUST NOT perform database queries in middleware (use dependencies instead)
 * MUST handle exceptions gracefully — middleware errors should not crash the app
@@ -45,14 +47,14 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
         return response
 ```
 
-# 2. CORS
+## 2. CORS
 
 * MUST configure CORS origins from environment variables (never hardcode)
 * MUST restrict `allow_origins` in production (never use `["*"]` in production)
 * MUST allow credentials only when necessary
 * See `common/cors.md` for general CORS principles
 
-# 3. Logging Middleware
+## 3. Logging Middleware
 
 * MUST log request method, path, status code, and duration for every request
 * MUST include request ID in all log entries

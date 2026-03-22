@@ -1,4 +1,5 @@
 $NOTE
+
 # Mental Models
 
 This defines the thinking patterns behind design decisions.
@@ -8,7 +9,7 @@ These are not concrete rules, but the "way of thinking" from which rules emerge.
 
 ## 1. Constraints Breed Creativity
 
-**"Fewer choices lead to faster and better decisions."**
+> *"Fewer choices lead to faster and better decisions."*
 
 "Faster" here means reduced decision fatigue and shorter code review cycles. When the framework constrains choices (e.g., "use Literal types over plain strings," "no bare `except`"), developers spend zero time debating the approach and reviewers can focus on logic rather than style. This compounds across a team — eliminating 10 micro-decisions per PR across 50 PRs/week saves meaningful cognitive load.
 
@@ -22,7 +23,7 @@ These are not concrete rules, but the "way of thinking" from which rules emerge.
 
 ## 2. Code is Read More Than Written
 
-**"Write code that the future reader (including yourself 3 months later) can understand as quickly as possible."**
+> *"Write code that the future reader (including yourself 3 months later) can understand as quickly as possible."*
 
 - Write code where intent is clear, rather than optimizing for brevity or shortness
 - Consistency in naming conventions directly impacts searchability and refactoring ease
@@ -34,9 +35,9 @@ These are not concrete rules, but the "way of thinking" from which rules emerge.
 
 ## 3. Validate at Boundaries
 
-**"Trust the internals, but validate strictly at the points of contact with the outside."**
+> *"Trust the internals, but validate strictly at the points of contact with the outside."*
 
-```
+```text
 External Input ──[Pydantic]──> Route Handler ──[Type Hints]──> Service Layer ──[ORM]──> DB
                ^ Guard here                    ^ Protected by types here
 ```
@@ -49,7 +50,7 @@ External Input ──[Pydantic]──> Route Handler ──[Type Hints]──> S
 
 ## 4. Design for Failure
 
-**"Don't write code that assumes things work. Design with the assumption that things break."**
+> *"Don't write code that assumes things work. Design with the assumption that things break."*
 
 - All external communication can fail (timeouts, rate limits, service outages)
 - Use types and explicit result patterns to prevent forgetting error handling (e.g., `Result[T, E]` or custom exception hierarchies)
@@ -62,9 +63,9 @@ External Input ──[Pydantic]──> Route Handler ──[Type Hints]──> S
 
 ## 5. Layered Architecture
 
-**"If the data flow is consistent, most bugs disappear."**
+> *"If the data flow is consistent, most bugs disappear."*
 
-```
+```text
 Route Handlers / CLI Commands (entry points)
        |
     Service Layer (business logic / orchestration)
@@ -84,7 +85,7 @@ Route Handlers / CLI Commands (entry points)
 
 ## 6. Rule of Three (Timing of Abstraction)
 
-**"Premature abstraction leads to wrong abstraction."**
+> *"Premature abstraction leads to wrong abstraction."*
 
 | Occurrences | Action |
 |-------------|--------|
@@ -100,7 +101,7 @@ Route Handlers / CLI Commands (entry points)
 
 ## 7. Make the Implicit Explicit
 
-**"Implicit agreements become bugs the moment the team changes."**
+> *"Implicit agreements become bugs the moment the team changes."*
 
 - Make side effects clear through naming (`fetch_user()` = has side effects, `calculate_price()` = pure)
 - Always include a reason with `# noqa` or `type: ignore`

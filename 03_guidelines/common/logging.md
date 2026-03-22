@@ -20,8 +20,11 @@ FastAPI (async endpoints / background tasks / middleware).
 ---
 
 ## 1. Monitoring
+
 ### Application Monitoring
+
 **Use a monitoring platform appropriate for your deployment target.**
+
 * **Prometheus + Grafana**
   * Request latency (p50 / p95 / p99)
   * Error rates by endpoint
@@ -32,6 +35,7 @@ FastAPI (async endpoints / background tasks / middleware).
   * Auto-scaling triggers
 
 **Monitoring targets:**
+
 * FastAPI route handlers
 * Background tasks (Celery / arq / asyncio tasks)
 * Database query performance
@@ -531,7 +535,7 @@ project = await with_performance_log(
 
 **Tracing architecture example:**
 
-```
+```text
 User Request
   → FastAPI Route Handler
     → Service Layer
@@ -550,6 +554,7 @@ User Request
 ---
 
 ## 4. Alert Configuration
+
 ### Application-Level Alerts
 
 * Error rate increase (per endpoint)
@@ -635,9 +640,10 @@ def redact_sensitive_fields(
 ```
 
 **Rules:**
-- Use `logger.error()` instead of `print()` or bare `traceback.print_exc()`
-- `print(os.environ["SECRET"])` is prohibited
-- Error tracebacks are server logs only (never return to client)
+
+* Use `logger.error()` instead of `print()` or bare `traceback.print_exc()`
+* `print(os.environ["SECRET"])` is prohibited
+* Error tracebacks are server logs only (never return to client)
 
 ---
 

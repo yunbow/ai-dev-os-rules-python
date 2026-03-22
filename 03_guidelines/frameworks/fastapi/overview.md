@@ -3,9 +3,11 @@
 > **Note:** The technology stack below is a sample configuration. Replace libraries based on your project's requirements. Files marked with `[Replaceable]` in this directory contain library-specific patterns — update the corresponding files when switching libraries.
 
 ## Purpose
+
 This is a guideline for designing scalable web APIs with FastAPI, balancing performance, type safety, observability, and developer productivity.
 
 ## Technology Stack
+
 - Python 3.12+
   - Async I/O (asyncio)
   - Type Hints (strict mode)
@@ -32,6 +34,7 @@ This is a guideline for designing scalable web APIs with FastAPI, balancing perf
 | Testing | pytest + httpx | pytest + TestClient (sync) | — |
 
 ## Basic Principles
+
 - Thin route handlers — business logic lives in service layer
 - Dependency injection via `Depends()` for all cross-cutting concerns
 - Pydantic models as the single source of truth for request/response schemas

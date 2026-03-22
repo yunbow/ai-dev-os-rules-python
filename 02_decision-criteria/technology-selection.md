@@ -1,4 +1,5 @@
 $NOTE
+
 # Decision Criteria for Technology Selection
 
 A decision framework for introducing new technologies, libraries, and tools.
@@ -22,6 +23,7 @@ Weight definitions: **High** = can veto adoption on its own. **Medium** = weigh 
 ### De Facto Standard Identification
 
 A library qualifies as "de facto standard" when it meets 2+ of:
+
 - Referenced in the framework's official documentation (e.g., FastAPI docs mention it)
 - 10x+ GitHub stars compared to the next alternative
 - Used by the framework's own tutorials or starter templates

@@ -6,11 +6,11 @@ This document defines how to design configuration resolution, defaults, and vali
 
 ---
 
-# 1. Configuration Resolution Order
+## 1. Configuration Resolution Order
 
 Configuration is resolved in priority order (higher number wins):
 
-```
+```text
 1. Default values (model field defaults)
 2. Configuration file (e.g., tool.config.toml)
 3. Environment variables
@@ -39,7 +39,7 @@ def resolve_config(cli_options: dict) -> Settings:
 
 ---
 
-# 2. Default Configuration
+## 2. Default Configuration
 
 Define all defaults in the Pydantic model as field defaults:
 
@@ -72,20 +72,21 @@ class Settings(BaseSettings):
 ```
 
 ### Rules
+
 - Every config field **must** have a default value (or be explicitly `None`)
 - Defaults should produce a **working configuration** with minimal user input
 - Export the `Settings` class for use in tests and documentation
 
 ---
 
-# 3. Configuration File
+## 3. Configuration File
 
 ## 3.1 File Format
 
 Use TOML as the primary config format (Python ecosystem standard):
 
 ```toml
-# tool.config.toml
+## tool.config.toml
 output_dir = "./reports"
 format = "pdf"
 modules = ["business", "ux", "competitor"]
@@ -138,16 +139,17 @@ class Settings(BaseSettings):
 
 ---
 
-# 4. Environment Variables
+## 4. Environment Variables
 
 ## 4.1 Naming Convention
 
-```
+```text
 {TOOL_NAME}_{SETTING} in SCREAMING_SNAKE_CASE
 ```
 
 Example:
-```
+
+```python
 MY_TOOL_OUTPUT_DIR=./reports
 MY_TOOL_VERBOSE=true
 MY_TOOL_CACHE_TTL=48h
@@ -171,7 +173,7 @@ class Settings(BaseSettings):
 
 ---
 
-# 5. Derived Configuration
+## 5. Derived Configuration
 
 Some values are computed from resolved configuration:
 
@@ -194,7 +196,7 @@ class Settings(BaseSettings):
 
 ---
 
-# 6. pyproject.toml Integration
+## 6. pyproject.toml Integration
 
 Support reading tool-specific configuration from `pyproject.toml`:
 
@@ -220,7 +222,7 @@ def load_pyproject_config() -> dict:
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **Resolution order: defaults → file → env → CLI** (CLI wins)
 - **Every field has a default** — minimal input produces a working config

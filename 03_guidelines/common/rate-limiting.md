@@ -7,9 +7,9 @@ This document defines the implementation patterns for API and endpoint rate limi
 ## 1. Core Policy
 
 - **ASGI-compatible**: Use a memory-based store by default. Migrate to Redis when any of these conditions are met:
-  * Running 2+ server instances (memory stores are per-instance, so limits are not shared)
-  * Sustained traffic exceeds 100 requests/second (memory cleanup overhead becomes significant)
-  * Rate limit accuracy is business-critical (e.g., billing-related quotas where approximate counts are unacceptable)
+  - Running 2+ server instances (memory stores are per-instance, so limits are not shared)
+  - Sustained traffic exceeds 100 requests/second (memory cleanup overhead becomes significant)
+  - Rate limit accuracy is business-critical (e.g., billing-related quotas where approximate counts are unacceptable)
 - **Preset configurations**: Provide default settings by use case
 - **User identification**: Limit by IP address or user ID
 

@@ -1,12 +1,15 @@
 # Error Handling Guidelines
+
 This document covers **only content that does not overlap with other documents**, focusing on error design, notification, user-facing experience, log levels, and error classification.
 
 It also **systematizes error classification and handling methods**, defining what messages to display and how to log for each error type: validation errors, authentication errors, system errors, etc.
 
 ---
 
-# 1. Error Taxonomy
+## 1. Error Taxonomy
+
 ### 1.1 System Errors (Server Internal)
+
 * DB connection failures
 * Uncaught exceptions
 * Runtime exceptions
@@ -19,6 +22,7 @@ Unpredictable / unrecoverable → Notify administrators + monitor
 ---
 
 ### 1.2 Application Errors (Expected Errors)
+
 * Validation errors
 * Domain logic errors (e.g., 409 Conflict)
 * Authorization errors (insufficient permissions)
@@ -31,6 +35,7 @@ Predictable / handling required → Provide clear feedback to users
 ---
 
 ### 1.3 User Operation Errors (User Mistakes)
+
 * Missing input
 * Unexpected operations (duplicate submissions, etc.)
 * **Input format errors preventable on the client side** — specifically:
@@ -46,7 +51,7 @@ Cases where the server returns error codes (e.g., 409 Conflict) are reclassified
 
 ### 1.4 Error Propagation Flow
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                        Error Source                               │
 ├──────────────────────────────────────────────────────────────────┤
@@ -73,19 +78,19 @@ Cases where the server returns error codes (e.g., 409 Conflict) are reclassified
 
 **Related Documents:**
 
-- External API error classification → Refer to project-specific integration guidelines
-- Exception hierarchy → common/exceptions.py
-- FastAPI error handlers → frameworks/fastapi/error_handlers.py
-- Logging → common/logging.md
+* External API error classification → Refer to project-specific integration guidelines
+* Exception hierarchy → common/exceptions.py
+* FastAPI error handlers → frameworks/fastapi/error_handlers.py
+* Logging → common/logging.md
 
 ---
 
-# 2. Exception Hierarchy
+## 2. Exception Hierarchy
 
 ### 2.1 Base Exception Classes
 
 ```python
-# lib/exceptions.py
+## lib/exceptions.py
 
 class AppError(Exception):
     """Base exception for all application errors."""
@@ -151,7 +156,7 @@ class DomainError(AppError):
 ### 2.2 FastAPI Exception Handlers
 
 ```python
-# lib/error_handlers.py
+## lib/error_handlers.py
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError as PydanticValidationError
@@ -191,8 +196,10 @@ def register_exception_handlers(app: FastAPI) -> None:
 
 ---
 
-# 3. API Error Policy (FastAPI)
+## 3. API Error Policy (FastAPI)
+
 ### 3.1 Unified Response Format
+
 ```json
 {
   "error": {
@@ -222,7 +229,7 @@ def register_exception_handlers(app: FastAPI) -> None:
 
 ---
 
-# 4. Log Levels and Recording Criteria (Non-overlapping with Observability)
+## 4. Log Levels and Recording Criteria (Non-overlapping with Observability)
 
 ### 4.1 Log Levels
 
@@ -240,7 +247,7 @@ def register_exception_handlers(app: FastAPI) -> None:
 
 ---
 
-# 5. Tracing ID on Error Occurrence
+## 5. Tracing ID on Error Occurrence
 
 > **Reference:** See common/logging.md for Trace ID implementation details
 
@@ -249,7 +256,7 @@ def register_exception_handlers(app: FastAPI) -> None:
 * Facilitates user support inquiries
 * Example:
 
-```
+```yaml
 x-request-id: abc123
 ```
 
@@ -262,7 +269,7 @@ x-request-id: abc123
 
 ---
 
-# 6. User-Facing Message Strategy
+## 6. User-Facing Message Strategy
 
 ### 6.1 Error Message Attributes
 
@@ -274,7 +281,7 @@ Each user-facing error message should address three dimensions:
 
 ---
 
-# 7. Retry Strategy
+## 7. Retry Strategy
 
 ### 7.1 Cases for Automatic Retry
 
@@ -289,7 +296,7 @@ Each user-facing error message should address three dimensions:
 
 ---
 
-# 8. Handling Business Logic Errors (Domain Exceptions)
+## 8. Handling Business Logic Errors (Domain Exceptions)
 
 ### 8.1 Handle Domain Rule Violations with Exception Classes
 
@@ -300,7 +307,7 @@ class DomainError(AppError):
         super().__init__(code=code, message=message, status_code=400)
 
 
-# Example usage
+## Example usage
 class InsufficientBalanceError(DomainError):
     def __init__(self):
         super().__init__(
@@ -316,7 +323,7 @@ class InsufficientBalanceError(DomainError):
 
 ---
 
-# 9. Fail-Safe / Graceful Degradation
+## 9. Fail-Safe / Graceful Degradation
 
 ### 9.1 Non-Essential Feature Failures Should Not Break Core Functionality
 
@@ -330,7 +337,7 @@ class InsufficientBalanceError(DomainError):
 
 ---
 
-# 10. Debug / Developer-Facing Errors During Development
+## 10. Debug / Developer-Facing Errors During Development
 
 ### 10.1 Dev Mode Displays Detailed Errors
 
@@ -343,7 +350,7 @@ class InsufficientBalanceError(DomainError):
 
 ---
 
-# 11. QA / Testing (Non-overlapping Perspectives)
+## 11. QA / Testing (Non-overlapping Perspectives)
 
 ### 11.1 Error Scenario Tests Should Comprise 30-50%
 

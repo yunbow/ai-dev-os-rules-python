@@ -28,7 +28,7 @@ npx ai-dev-os init --rules python --plugin claude-code
 <details>
 <summary>Configuración manual</summary>
 
-**Agregar como submodule**
+### Agregar como submodule
 
 ```bash
 cd /path/to/your-project
@@ -36,17 +36,17 @@ git submodule add https://github.com/yunbow/ai-dev-os-rules-python.git docs/ai-d
 git submodule update --init
 ```
 
-**Configurar con plantillas (Python CLI)**
+### Configurar con plantillas (Python CLI)
 
 ```bash
 bash docs/ai-dev-os/templates/python-cli/submodule-setup.sh
 ```
 
-**Editar CLAUDE.md**
+### Editar CLAUDE.md
 
 Copie `templates/python-cli/CLAUDE.md.template` como `./CLAUDE.md` y complete el nombre del proyecto y las directrices específicas.
 
-**Actualizar submodule**
+### Actualizar submodule
 
 ```bash
 git submodule update --remote docs/ai-dev-os
@@ -78,7 +78,7 @@ Cuando las reglas entran en conflicto, **el número menor gana**.
 <details>
 <summary>Estructura de directorios</summary>
 
-```
+```text
 ai-dev-os/
 ├── docs/
 │   ├── operation-guide.md        # Guía de operación y contribución
@@ -132,7 +132,7 @@ ai-dev-os/
 
 Para políticas de actualización, pasos de adición de frameworks y detalles de versionado, consulte **[docs/operation-guide.md](../../../docs/operation-guide.md)**.
 
-**Guía de frecuencia de actualización**
+### Guía de frecuencia de actualización
 
 | Sección | Frecuencia | Alcance |
 |---------|-----------|---------|
@@ -142,7 +142,7 @@ Para políticas de actualización, pasos de adición de frameworks y detalles de
 | `03_guidelines/frameworks/` | Alta | Solo proyectos del FW relevante |
 | `templates/` | Media | Solo proyectos nuevos |
 
-**Agregar frameworks**
+### Agregar frameworks
 
 Para agregar un nuevo framework (ej., FastAPI, Flask, Django):
 

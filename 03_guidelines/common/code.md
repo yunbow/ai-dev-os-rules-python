@@ -2,7 +2,8 @@
 
 This guideline defines the **Python coding standards and static analysis tool policies** to be enforced across the entire project.
 
-# 1. Key Principles
+## 1. Key Principles
+
 * **Prioritize readability and maintainability**
   Write code that communicates intent, rather than being concise or abbreviated.
 * **Enforce type safety**
@@ -10,9 +11,10 @@ This guideline defines the **Python coding standards and static analysis tool po
 * **Ensure quality through static analysis**
   Enforce formatting and code quality through tooling, not manual effort.
 
-# 2. Python Coding Standards
+## 2. Python Coding Standards
 
 ## 2.1 Type Annotation Placement
+
 * Project type definitions **must be separated into dedicated modules**
 * Use `dataclass` for data structures, `Protocol` for contracts expected to change
 
@@ -80,14 +82,14 @@ def get_status_label(status: TaskStatus) -> str:
 
 This applies to all Enum types, Literal unions, and action type dispatchers.
 
-# 3. Lint Standards
+## 3. Lint Standards
 
 ## 3.1 Rule Sets
 
 Use **Ruff** as the unified linter and formatter:
 
 ```toml
-# pyproject.toml
+## pyproject.toml
 [tool.ruff]
 target-version = "py312"
 line-length = 100
@@ -130,18 +132,18 @@ Auto-removal is required via `ruff check --fix`.
 
 ## 3.3 Import Order Rules
 
-```
+```text
 stdlib → third-party → first-party → local
 ```
 
 Enforced by Ruff's `I` (isort) rule set.
 
-# 4. Formatting
+## 4. Formatting
 
 ## 4.1 Configuration
 
 ```toml
-# pyproject.toml
+## pyproject.toml
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -154,7 +156,7 @@ line-length = 100
 Alternatively, use **Black** as the formatter:
 
 ```toml
-# pyproject.toml
+## pyproject.toml
 [tool.black]
 line-length = 100
 target-version = ["py312"]
@@ -166,7 +168,7 @@ target-version = ["py312"]
 | `quote-style` | `"double"` | Prioritizes consistency |
 | `indent-style` | `"space"` (4 spaces) | PEP 8 standard indentation |
 
-# 5. CI / Git Hooks Integration
+## 5. CI / Git Hooks Integration
 
 Static analysis and formatting **must not rely on manual execution**.
 Always automate the following:
@@ -177,7 +179,7 @@ Always automate the following:
 
 ---
 
-# 6. Comment Standards
+## 6. Comment Standards
 
 * Do not use comments to explain logic
 * Only document intent, side effects, and exceptional conditions
@@ -193,7 +195,7 @@ def calculate_order_amount(items: list[OrderItem]) -> Decimal:
 
 ---
 
-# 7. Code Reuse Patterns
+## 7. Code Reuse Patterns
 
 ## 7.1 Service Layer Factory Pattern
 
@@ -202,7 +204,7 @@ def calculate_order_amount(items: list[OrderItem]) -> Decimal:
 ### Base Pattern: service decorator
 
 ```python
-# lib/actions/action_helpers.py
+## lib/actions/action_helpers.py
 from functools import wraps
 from pydantic import BaseModel
 from typing import TypeVar, Callable, Awaitable
@@ -231,7 +233,7 @@ def with_auth_and_validation(
 ### Resource Save Factory
 
 ```python
-# features/{domain}/services/resource_save_helper.py
+## features/{domain}/services/resource_save_helper.py
 from dataclasses import dataclass
 from typing import Callable, Awaitable, TypeVar
 from pydantic import BaseModel
@@ -255,7 +257,7 @@ def create_resource_save_action(options: ResourceSaveOptions):
     return action
 
 
-# Usage example
+## Usage example
 save_product = create_resource_save_action(
     ResourceSaveOptions(
         model=ProductSchema,
@@ -268,7 +270,7 @@ save_product = create_resource_save_action(
 ### Image Generation Factory
 
 ```python
-# features/{domain}/services/ai_generation_helper.py
+## features/{domain}/services/ai_generation_helper.py
 @dataclass
 class ImageGenerationOptions:
     model: type[BaseModel]
@@ -288,7 +290,7 @@ def create_image_generation_action(options: ImageGenerationOptions):
 ## 7.2 Authentication & Authorization Helpers
 
 ```python
-# lib/actions/auth_helpers.py
+## lib/actions/auth_helpers.py
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -324,7 +326,7 @@ async def require_relation_ownership(
 ## 7.3 HTTP Client Centralization
 
 ```python
-# lib/api/http_client.py
+## lib/api/http_client.py
 import httpx
 
 
@@ -344,18 +346,18 @@ async def fetch_with_auth(url: str, **kwargs) -> dict:
     return response.json()
 
 
-# Usage example: eliminating duplication
-# Bad: Writing httpx calls directly everywhere
-# response = await httpx.post("/api/generate/auto-config", ...)
+## Usage example: eliminating duplication
+## Bad: Writing httpx calls directly everywhere
+## response = await httpx.post("/api/generate/auto-config", ...)
 
-# Good: Using the shared client
-# result = await fetch_with_auth("/api/generate/auto-config", method="POST", json=data)
+## Good: Using the shared client
+## result = await fetch_with_auth("/api/generate/auto-config", method="POST", json=data)
 ```
 
 ## 7.4 Generic CRUD Repository
 
 ```python
-# lib/repository/base_crud.py
+## lib/repository/base_crud.py
 from typing import TypeVar, Generic, Type
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -401,17 +403,17 @@ class BaseCRUDRepository(Generic[T]):
 ## 7.6 Anti-Patterns
 
 ```python
-# Bad: Premature abstraction
-# Abstracting when only used in one place
+## Bad: Premature abstraction
+## Abstracting when only used in one place
 def _single_use_helper():
     ...
 
-# Bad: Bloated configuration objects
+## Bad: Bloated configuration objects
 create_action(
     option1=..., option2=..., option3=..., option4=..., option5=...,  # Too many
 )
 
-# Good: Extract only the common parts, implement special cases individually
+## Good: Extract only the common parts, implement special cases individually
 base_action = create_base_action(common_options)
 
 async def special_action(input_data):

@@ -1,4 +1,5 @@
 $NOTE
+
 # Balancing Security and UX
 
 Criteria for judging the appropriate balance by considering the impact of security measures on user experience.
@@ -7,7 +8,7 @@ Criteria for judging the appropriate balance by considering the impact of securi
 
 ## Fundamental Principle
 
-**"Security is enabled by default. When relaxing it for UX reasons, make the risks explicit before deciding."**
+> *"Security is enabled by default. When relaxing it for UX reasons, make the risks explicit before deciding."*
 
 ---
 
@@ -52,7 +53,7 @@ Criteria for judging the appropriate balance by considering the impact of securi
 
 ### UX When Rate Limit Is Exceeded
 
-```
+```text
 Limit Exceeded
   |
   +-- Return Retry-After header
@@ -74,7 +75,7 @@ Limit Exceeded
 
 ### Suspicious Login Detection Flow
 
-```
+```text
 Login Attempt
   |
   +-- First-time login? -> No alert (accept)
@@ -131,7 +132,7 @@ Login Attempt
 
 ## 6. Decision Tree When in Doubt
 
-```
+```text
 Want to relax a security measure
   |
   +-- Can the user not complete their operation without relaxation?

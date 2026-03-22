@@ -16,7 +16,7 @@ It leverages FastAPI's built-in `CORSMiddleware` for standard CORS handling, wit
 
 ## 2. Directory Structure
 
-```
+```text
 app/
   core/
     cors.py              # CORS configuration (scope of this guideline)
@@ -59,6 +59,7 @@ def get_allowed_origins() -> list[str]:
 ```
 
 **Key points:**
+
 - Specify via comma-separated `ALLOWED_ORIGINS` environment variable (e.g., `https://app.example.com,https://admin.example.com`)
 - When `ALLOWED_ORIGINS` is not set, falls back to localhost development URLs and `APP_URL`
 
@@ -88,6 +89,7 @@ app.add_middleware(
 ```
 
 **Key points:**
+
 - `CORSMiddleware` automatically handles preflight `OPTIONS` requests
 - `allow_credentials=True` means `Access-Control-Allow-Origin` cannot be `*` (the middleware returns the specific matching origin)
 - `max_age` caches preflight results (default: 24 hours)
@@ -220,6 +222,7 @@ def validate_timestamp(
 ```
 
 **Key points:**
+
 - Reject not only past but also future timestamps (timestamp tampering prevention)
 - Default tolerance is 5 minutes (accounting for network latency)
 - Supports both ISO 8601 strings and Unix timestamps

@@ -19,28 +19,33 @@
 ### 1.2 更新時のルール
 
 **全セクション共通:**
+
 - プロジェクト固有の記述（特定サービス名、特定ドメイン用語）を含めない
 - 具体例が必要な場合は汎用的なプレースホルダ（`{domain}`, `{決済サービス}` 等）を使用
 - 変更後は `README.md` のディレクトリ構造を最新状態に更新
 
 **言語ポリシー:**
+
 - `01_philosophy/` と `02_decision-criteria/` には**英語のサンプルコンテンツ**が含まれています — クローン後に**母国語で書き直してください**（抽象的な思考・判断基準はニュアンスを保つため母国語が最適）
 - その他のセクション（`03_guidelines/`, `templates/`）は**英語**で記述 — AI互換性と国際的なアクセシビリティのため
 - 多言語の運用ガイドは `docs/i18n/`（JA, ZH, KO, ES）で管理
 - コンテンツの追加・更新時は常にこの言語ポリシーに従うこと
 
 **`01_philosophy/` の更新:**
+
 - サンプルコンテンツ（英語）が含まれています。クローン後に**母国語で書き直してください**
 - 新しい原則の追加は既存原則との矛盾がないか確認
 - 削除・大幅変更は MAJOR バージョンとして扱う
 - `02_decision-criteria/` 以下との整合性も合わせて確認
 
 **`02_decision-criteria/` の更新:**
+
 - サンプルコンテンツ（英語）が含まれています。クローン後に**母国語で書き直してください**
 - 判断基準の変更は `03_guidelines/` の該当セクションにも反映が必要か確認
 - 新しい判断軸の追加は、対応するガイドラインの有無を確認
 
 **`03_guidelines/` の更新:**
+
 - `common/` と `frameworks/` で内容が重複しないよう注意
 - 共通化すべき内容が framework 固有に書かれていないか定期的にレビュー
 - 詳細は「2. フレームワークガイドラインの追加」を参照
@@ -49,6 +54,7 @@
 同期手順の詳細、ファイルごとの同期テーブル、差分確認用コマンドは [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
 
 **`templates/` の更新:**
+
 - テンプレートは新規プロジェクト向け。既存プロジェクトへの自動適用はしない
 - 設定ファイル（pyproject.toml, ruff 設定等）は `03_guidelines/` の規約と一致させる
 
@@ -69,7 +75,7 @@
 
 ### 2.2 ディレクトリ構成
 
-```
+```text
 03_guidelines/frameworks/{framework-name}/
 ├── overview.md            # 技術スタック定義（必須）
 ├── project-structure.md   # ディレクトリ構成（必須）
@@ -116,12 +122,13 @@
 | framework 固有の概念 | framework 側にのみ作成 |
 
 **ファイル命名規則:**
+
 - `common/` と対応する場合は同名にする（例: `common/security.md` → `python-cli/security.md`）
 - framework 固有の概念は説明的な名前を付ける（例: `dependency-injection.md`, `cli-commands.md`）
 
 #### Step 4: テンプレートの作成
 
-```
+```text
 templates/{framework-name}/
 ├── CLAUDE.md.template     # CLAUDE.md テンプレート（必須）
 ├── submodule-setup.sh     # セットアップスクリプト（推奨）
@@ -136,17 +143,19 @@ templates/{framework-name}/
 
 ### 2.4 common/ との責務分離の原則
 
-```
+```text
 common/          → 「何をすべきか」（言語・FW 非依存のルール）
 frameworks/xxx/  → 「どう実現するか」（FW 固有の実装パターン）
 ```
 
-**例: バリデーション**
+### 例: バリデーション
+
 - `common/validation.md` → 「サーバーサイドバリデーション必須」「Pydantic 推奨」
 - `frameworks/python-cli/validation.md` → 「Pydantic モデルと Typer 引数パースでのバリデーションパターン」
 - `frameworks/fastapi/validation.md` → 「Pydantic モデルと依存性注入によるリクエストボディバリデーション」
 
-**例: エラーハンドリング**
+### 例: エラーハンドリング
+
 - `common/error-handling.md` → 「エラー分類」「ユーザー表示の原則」
 - `frameworks/python-cli/error-handling.md` → 「カスタム例外階層と Typer 終了コード」
 

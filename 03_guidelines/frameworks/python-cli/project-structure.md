@@ -1,9 +1,11 @@
 # Project Structure Guidelines
+
 This document defines the directory layout and architecture guidelines for Python CLI tool projects.
 
 ---
 
-# 1. Overall Principles
+## 1. Overall Principles
+
 - Adopt **module-based (domain-based) structure**
   - Group types / services / utils per functional domain
 - **Separate CLI layer from core logic**
@@ -13,9 +15,9 @@ This document defines the directory layout and architecture guidelines for Pytho
 
 ---
 
-# 2. Directory Structure
+## 2. Directory Structure
 
-```
+```text
 src/
 └─ {package_name}/
    ├─ __init__.py               # Library barrel export (no CLI dependency)
@@ -74,13 +76,13 @@ pyproject.toml                  # Project metadata, dependencies, entry points
 
 ---
 
-# 3. Module Design
+## 3. Module Design
 
 ## 3.1 Internal Structure of a Module
 
 Select files based on the scale of the module. Not all are required.
 
-```
+```text
 {module}/
 ├─ __init__.py                  # Public API (re-exports)
 ├─ {feature}.py                 # Feature implementation
@@ -91,14 +93,16 @@ Select files based on the scale of the module. Not all are required.
 ## 3.2 Structure Examples by Scale
 
 **Small module** (config, cache):
-```
+
+```text
 config/
 ├─ __init__.py
 └─ settings.py                  # Pydantic model + resolve logic in a single file
 ```
 
 **Medium module** (preprocessor, reporter):
-```
+
+```text
 reporter/
 ├─ __init__.py                  # Entry: generate_all_reports()
 ├─ base.py                      # Shared reporter helper
@@ -107,7 +111,8 @@ reporter/
 ```
 
 **Large module** (collector with multiple strategies):
-```
+
+```text
 collector/
 ├─ __init__.py                  # Entry: collect()
 ├─ web.py                       # Web scraping (Playwright)
@@ -118,16 +123,18 @@ collector/
 
 ---
 
-# 4. Dependency Rules
+## 4. Dependency Rules
 
 ## 4.1 Allowed Dependencies
-```
+
+```text
 cli/ → pipeline/ → {domain modules} → utils/, config/
                  → cache/
                  → extensions/
 ```
 
 ## 4.2 Prohibited Practices
+
 - **Cross-domain module dependencies are prohibited** — if two modules need shared logic, extract it to `utils/`
 - **utils/ → domain module dependencies are prohibited**
 - **Domain modules → cli/ dependencies are prohibited** — core logic must work without CLI
@@ -135,9 +142,10 @@ cli/ → pipeline/ → {domain modules} → utils/, config/
 
 ---
 
-# 5. CLI Layer Separation (Strict)
+## 5. CLI Layer Separation (Strict)
 
 The `cli/` directory is **strictly limited** to:
+
 - Argument parsing and validation (Typer setup)
 - Configuration resolution
 - Orchestrator invocation
@@ -147,7 +155,7 @@ The `cli/` directory is **strictly limited** to:
 Business logic, data processing, and I/O operations belong in domain modules.
 
 ```python
-# cli/main.py — GOOD: thin wrapper
+## cli/main.py — GOOD: thin wrapper
 config = resolve_config(options)
 orchestrator = PipelineOrchestrator(config)
 results = orchestrator.run()
@@ -156,12 +164,12 @@ raise SystemExit(1 if any(not r.success for r in results) else 0)
 
 ---
 
-# 6. Library Export Pattern
+## 6. Library Export Pattern
 
 `src/{package}/__init__.py` exports the public API for programmatic usage:
 
 ```python
-# __init__.py
+## __init__.py
 from .pipeline.orchestrator import PipelineOrchestrator, create_default_steps
 from .config.settings import Settings, DEFAULT_CONFIG
 from .utils.errors import AppError
@@ -171,7 +179,7 @@ This allows the tool to be used as both a CLI and an importable library.
 
 ---
 
-# 7. Entry Point Configuration
+## 7. Entry Point Configuration
 
 Define CLI entry points in `pyproject.toml`:
 
@@ -182,7 +190,7 @@ my-tool = "my_tool.cli.main:app"
 
 ---
 
-# 8. Test Organization
+## 8. Test Organization
 
 | Location | Purpose |
 |----------|---------|
@@ -197,7 +205,7 @@ my-tool = "my_tool.cli.main:app"
 
 ---
 
-# 9. Guidelines Summary
+## 9. Guidelines Summary
 
 - **Module-based structure is the default**
 - **CLI layer is a thin wrapper — no business logic**

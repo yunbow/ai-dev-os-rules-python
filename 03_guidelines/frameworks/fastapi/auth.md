@@ -1,15 +1,16 @@
 # Authentication & Authorization Guidelines
 
-# 1. Authentication
+## 1. Authentication
 
 ## 1.1 JWT-Based Authentication
+
 * MUST use JWT tokens for stateless authentication
 * MUST store secrets in environment variables (never hardcode)
 * MUST set token expiration (access: 15-60 min, refresh: 7-30 days)
 * MUST use `Depends()` for all protected endpoints
 
 ```python
-# core/security.py
+## core/security.py
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
@@ -28,18 +29,20 @@ async def get_current_user(
 ```
 
 ## 1.2 Password Handling
+
 * MUST hash passwords with bcrypt (or argon2)
 * MUST NOT store plain-text passwords
 * MUST NOT log passwords or tokens
 
-# 2. Authorization
+## 2. Authorization
 
 ## 2.1 Role-Based Access Control
+
 * MUST implement authorization as a dependency, not inline in handlers
 * MUST check permissions before executing business logic
 
 ```python
-# core/security.py
+## core/security.py
 def require_role(*roles: str):
     async def dependency(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in roles:
@@ -47,7 +50,7 @@ def require_role(*roles: str):
         return current_user
     return dependency
 
-# Usage in router
+## Usage in router
 @router.delete("/{user_id}", status_code=204)
 async def delete_user(
     user_id: int,
@@ -57,11 +60,12 @@ async def delete_user(
 ```
 
 ## 2.2 Resource-Level Authorization
+
 * MUST verify that the authenticated user has access to the specific resource
 * MUST NOT rely solely on role checks — check resource ownership where applicable
 
 ```python
-# features/orders/service.py
+## features/orders/service.py
 async def get_order(self, order_id: int, current_user: User) -> Order:
     order = await self.repository.get(order_id)
     if not order:

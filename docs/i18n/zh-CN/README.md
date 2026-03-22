@@ -28,7 +28,7 @@ npx ai-dev-os init --rules python --plugin claude-code
 <details>
 <summary>手动设置</summary>
 
-**作为 submodule 添加**
+### 作为 submodule 添加
 
 ```bash
 cd /path/to/your-project
@@ -36,17 +36,17 @@ git submodule add https://github.com/yunbow/ai-dev-os-rules-python.git docs/ai-d
 git submodule update --init
 ```
 
-**使用模板设置（Python CLI）**
+### 使用模板设置（Python CLI）
 
 ```bash
 bash docs/ai-dev-os/templates/python-cli/submodule-setup.sh
 ```
 
-**编辑 CLAUDE.md**
+### 编辑 CLAUDE.md
 
 将 `templates/python-cli/CLAUDE.md.template` 复制为 `./CLAUDE.md`，并填写项目名称和特定指南。
 
-**更新 submodule**
+### 更新 submodule
 
 ```bash
 git submodule update --remote docs/ai-dev-os
@@ -78,7 +78,7 @@ git submodule update --remote docs/ai-dev-os
 <details>
 <summary>目录结构</summary>
 
-```
+```text
 ai-dev-os/
 ├── docs/
 │   ├── operation-guide.md        # 运维与贡献指南
@@ -132,7 +132,7 @@ ai-dev-os/
 
 更新策略、框架添加步骤和版本管理详情，请参阅 **[docs/operation-guide.md](../../../docs/operation-guide.md)**。
 
-**更新频率指南**
+### 更新频率指南
 
 | 部分 | 频率 | 影响范围 |
 |------|------|---------|
@@ -142,7 +142,7 @@ ai-dev-os/
 | `03_guidelines/frameworks/` | 频繁 | 仅相关框架的项目 |
 | `templates/` | 中等 | 仅新项目 |
 
-**添加框架**
+### 添加框架
 
 添加新框架（如 FastAPI, Flask, Django）时：
 

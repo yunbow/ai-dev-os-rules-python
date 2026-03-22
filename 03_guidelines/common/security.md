@@ -1,10 +1,12 @@
 # Security Guidelines
+
 This document summarizes the **security and privacy strategy** for Python web applications.
 Deployment target: **Cloud platform (e.g., AWS, GCP, or self-hosted)**
 
 ---
 
-# Purpose of the Security Strategy
+## Purpose of the Security Strategy
+
 * Handle sensitive data securely
 * Prevent authentication and authorization vulnerabilities
 * Minimize attack vectors for APIs, databases, and external integrations
@@ -13,7 +15,8 @@ Deployment target: **Cloud platform (e.g., AWS, GCP, or self-hosted)**
 
 ---
 
-# 1. Fundamental Principles (Zero Trust Architecture)
+## 1. Fundamental Principles (Zero Trust Architecture)
+
 * Default deny: grant only the necessary permissions
 * Separate responsibilities across each layer: Client -> Server -> DB
 * Minimize scope of sessions, cookies, and tokens
@@ -23,47 +26,51 @@ Deployment target: **Cloud platform (e.g., AWS, GCP, or self-hosted)**
 
 ---
 
-# 2. Client-Side Security
+## 2. Client-Side Security
 
 ## CSRF Prevention
+
 * SameSite=Lax or stricter
 * Enforce HTTPS
 * Perform **Origin / Referer checks** in API routes
 * Allow only POST/PUT/DELETE for state-changing APIs
 
 ## Clickjacking Prevention
+
 HTTP Headers:
 
-```
+```yaml
 X-Frame-Options: DENY
 Content-Security-Policy: frame-ancestors 'none';
 ```
 
 ---
 
-# 3. API / Route Security
+## 3. API / Route Security
 
 ## Authorization
+
 * Introduce RBAC/ABAC (role-based or attribute-based access control)
 * Perform authorization checks at the route handler / dependency layer
 * **Require IDOR prevention**: When accessing resources (e.g., `GET /api/users/{id}`), always verify that the requesting user is the owner of that resource
 * Verify through unit tests and integration tests that horizontal and vertical privilege escalation does not occur in authorization logic
 
 ## Rate Limiting
+
 * Apply IP-based rate limiting via FastAPI middleware
 * When using an API Gateway, apply WAF + Throttling
 * For external APIs (payment services, AI APIs, etc.), leverage each service's built-in rate limiting
 
 ---
 
-# 3.1 IDOR Prevention Pattern (Implementation Examples)
+## 3.1 IDOR Prevention Pattern (Implementation Examples)
 
 > **Reference:** See common/error-handling.md for details on the exception hierarchy
 
 ## Basic Pattern: Ownership Verification Dependency
 
 ```python
-# src/lib/dependencies/auth.py
+## src/lib/dependencies/auth.py
 from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -98,7 +105,7 @@ async def require_project_ownership(
 ## Usage Example in Route Handlers
 
 ```python
-# Bad: No ownership verification
+## Bad: No ownership verification
 @router.put("/projects/{project_id}")
 async def update_project(
     project_id: str, data: UpdateProjectSchema, db: AsyncSession = Depends(get_db)
@@ -108,7 +115,7 @@ async def update_project(
     )  # Can update other users' projects
 
 
-# Good: With ownership verification
+## Good: With ownership verification
 @router.put("/projects/{project_id}")
 async def update_project(
     data: UpdateProjectSchema,
@@ -123,7 +130,7 @@ async def update_project(
 ## Query Filter Pattern
 
 ```python
-# Query pattern to retrieve only the user's own resources
+## Query pattern to retrieve only the user's own resources
 @router.get("/projects")
 async def get_user_projects(
     current_user: User = Depends(get_current_user),
@@ -138,7 +145,7 @@ async def get_user_projects(
 
 ---
 
-# 3.2 Rate Limiting
+## 3.2 Rate Limiting
 
 > **Reference:** See common/rate-limiting.md for complete implementation patterns
 
@@ -153,9 +160,9 @@ async def get_user_projects(
 
 ## Implementation Approach
 
-- **Development / single instance**: Memory-based store
-- **Production / multiple instances**: Redis
-- **Standard headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`
+* **Development / single instance**: Memory-based store
+* **Production / multiple instances**: Redis
+* **Standard headers**: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `Retry-After`
 
 ## MUST: Apply Rate Limiting to ALL Auth Endpoints
 
@@ -172,12 +179,12 @@ async def register(request: Request, data: RegisterInput):
 
 ---
 
-# 3.3 Webhook Security
+## 3.3 Webhook Security
 
 ## Signature Verification Pattern
 
 ```python
-# lib/webhooks/verification.py
+## lib/webhooks/verification.py
 import hmac
 import hashlib
 import os
@@ -230,7 +237,7 @@ async def process_webhook(event_id: str, db: AsyncSession) -> bool:
 ## Timestamp Validation
 
 ```python
-# Reject webhooks that are too old (replay attack prevention)
+## Reject webhooks that are too old (replay attack prevention)
 from datetime import datetime, timezone
 
 WEBHOOK_MAX_AGE_SECONDS = 5 * 60  # 5 minutes
@@ -250,12 +257,12 @@ def validate_timestamp(timestamp: str) -> bool:
 
 ---
 
-# 3.4 Security Headers Middleware
+## 3.4 Security Headers Middleware
 
 Add security headers to all responses via FastAPI middleware.
 
 ```python
-# src/middleware/security_headers.py
+## src/middleware/security_headers.py
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
@@ -274,12 +281,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 ---
 
-# 3.5 Webhook Certificate URL SSRF Prevention
+## 3.5 Webhook Certificate URL SSRF Prevention
 
 When using certificate URLs for webhook signature verification, prevent SSRF attacks.
 
 ```python
-# src/lib/external/webhook_utils.py
+## src/lib/external/webhook_utils.py
 from urllib.parse import urlparse
 
 
@@ -294,17 +301,17 @@ def is_valid_webhook_cert_url(cert_url: str, allowed_hosts: list[str]) -> bool:
     )
 ```
 
-- Use a domain allowlist approach (safer than IP blocklists)
-- Call at the beginning of webhook signature verification
+* Use a domain allowlist approach (safer than IP blocklists)
+* Call at the beginning of webhook signature verification
 
 ---
 
-# 3.6 Email Template HTML Injection Prevention
+## 3.6 Email Template HTML Injection Prevention
 
 Always escape user-derived data when embedding it in HTML emails.
 
 ```python
-# src/lib/email.py
+## src/lib/email.py
 import html
 
 
@@ -312,30 +319,30 @@ def escape_html(value: str) -> str:
     return html.escape(value)
 ```
 
-- Trusted values such as translation results, plan names, UUIDs, and numbers do not need escaping
-- Free-text fields such as admin-entered notes must always be escaped
+* Trusted values such as translation results, plan names, UUIDs, and numbers do not need escaping
+* Free-text fields such as admin-entered notes must always be escaped
 
 ---
 
-# 3.7 Error Response Information Leakage Prevention
+## 3.7 Error Response Information Leakage Prevention
 
-- Never expose stack traces in API error responses
-- Only safe error codes and messages may be returned
-- Exclude `traceback` from all production error responses
+* Never expose stack traces in API error responses
+* Only safe error codes and messages may be returned
+* Exclude `traceback` from all production error responses
 
 ---
 
-# 3.8 Session Management
+## 3.8 Session Management
 
-- Maximum concurrent sessions: 5 (per user)
-- Session list endpoint: display device, IP, and location information
-- Bulk logout functionality
-- TOTP 2FA: lock for 15 minutes after 5 failed attempts, send lock notification email
+* Maximum concurrent sessions: 5 (per user)
+* Session list endpoint: display device, IP, and location information
+* Bulk logout functionality
+* TOTP 2FA: lock for 15 minutes after 5 failed attempts, send lock notification email
 
 ### Suspicious Login Detection and Notification
 
 ```python
-# src/lib/security/suspicious_login_detector.py
+## src/lib/security/suspicious_login_detector.py
 from dataclasses import dataclass
 
 
@@ -355,31 +362,31 @@ async def detect_suspicious_login(
     ...
 ```
 
-- Compare the current country against successful login history from the past 30 days
-- Return `is_suspicious=True` when a login is from a new country
-- `LoginHistory` model has a `country` column (ISO 3166-1 alpha-2)
-- Country information is obtained from `x-user-country` / `cf-ipcountry` or GeoIP headers
-- On detection, send email notification via `send_suspicious_login_email()` (including IP, country, browser, and OS information)
-- **Asynchronous sending**: do not block the login flow
-- **Fail-safe**: on error, assume "not suspicious" (do not block legitimate users)
-- First login (no history) is not treated as suspicious
+* Compare the current country against successful login history from the past 30 days
+* Return `is_suspicious=True` when a login is from a new country
+* `LoginHistory` model has a `country` column (ISO 3166-1 alpha-2)
+* Country information is obtained from `x-user-country` / `cf-ipcountry` or GeoIP headers
+* On detection, send email notification via `send_suspicious_login_email()` (including IP, country, browser, and OS information)
+* **Asynchronous sending**: do not block the login flow
+* **Fail-safe**: on error, assume "not suspicious" (do not block legitimate users)
+* First login (no history) is not treated as suspicious
 
 ---
 
-# 3.9 OSS License Policy
+## 3.9 OSS License Policy
 
 > **Reference:** Refer to project-specific legal and compliance guidelines
 
-- **Prohibited**: AGPL, GPL-2.0, GPL-3.0 (SaaS source code disclosure obligation)
-- **Permitted**: MIT, Apache-2.0, ISC, BSD variants, CC0, Unlicense, MPL-2.0
-- Run `pip-licenses` or `liccheck` when adding dependency packages
+* **Prohibited**: AGPL, GPL-2.0, GPL-3.0 (SaaS source code disclosure obligation)
+* **Permitted**: MIT, Apache-2.0, ISC, BSD variants, CC0, Unlicense, MPL-2.0
+* Run `pip-licenses` or `liccheck` when adding dependency packages
 
 ---
 
-# 3.10 Admin Panel IP Restriction
+## 3.10 Admin Panel IP Restriction
 
 ```python
-# src/lib/security/admin_ip_restriction.py
+## src/lib/security/admin_ip_restriction.py
 import ipaddress
 import os
 
@@ -412,19 +419,19 @@ def is_admin_ip_allowed(client_ip: str | None) -> bool:
     return False
 ```
 
-- Set IP allowlist via the `ADMIN_ALLOWED_IPS` environment variable
-- Multiple IPs can be specified with comma separation (e.g., `203.0.113.1,192.168.1.0/24`)
-- **CIDR notation support**: subnet-level authorization
-- If undefined, no restriction is applied (all IPs can access)
-- Block access if IP cannot be determined
-- Check in FastAPI dependency when accessing `/admin` paths
+* Set IP allowlist via the `ADMIN_ALLOWED_IPS` environment variable
+* Multiple IPs can be specified with comma separation (e.g., `203.0.113.1,192.168.1.0/24`)
+* **CIDR notation support**: subnet-level authorization
+* If undefined, no restriction is applied (all IPs can access)
+* Block access if IP cannot be determined
+* Check in FastAPI dependency when accessing `/admin` paths
 
 ---
 
-# 3.11 Maintenance Mode
+## 3.11 Maintenance Mode
 
 ```python
-# src/middleware/maintenance.py
+## src/middleware/maintenance.py
 import os
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -448,14 +455,16 @@ class MaintenanceMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 ```
 
-- Enable with the environment variable `MAINTENANCE_MODE=true`
-- Return 503 to all non-admin users
-- **Admin IP bypass**: IPs listed in `ADMIN_ALLOWED_IPS` can access normally
+* Enable with the environment variable `MAINTENANCE_MODE=true`
+* Return 503 to all non-admin users
+* **Admin IP bypass**: IPs listed in `ADMIN_ALLOWED_IPS` can access normally
 
 ---
 
-# 4. Database Security
+## 4. Database Security
+
 ## SQLAlchemy + DB Protection
+
 * Use minimum privileges for DB users (consider introducing read-only users). "Minimum privileges" means:
   * Application DB user: only `SELECT`, `INSERT`, `UPDATE`, `DELETE` on application tables — no `CREATE`, `DROP`, `ALTER`, or `GRANT`
   * Read-only DB user (for analytics/reporting): only `SELECT`
@@ -463,6 +472,7 @@ class MaintenanceMiddleware(BaseHTTPMiddleware):
 * Store DB credentials in `.env` or cloud secret management
 
 ## Data Encryption
+
 * Set appropriate **file access permissions** for the database (SQLite)
 * Consider application-layer encryption for personal data (e.g., AES-256 via `cryptography` library)
 * **Encryption key management**: Manage keys in a dedicated secret management service (AWS Secrets Manager, GCP Secret Manager, HashiCorp Vault), retrieving them only at runtime
@@ -470,15 +480,17 @@ class MaintenanceMiddleware(BaseHTTPMiddleware):
 
 ---
 
-# 5. Secrets / Environment Variable Management
+## 5. Secrets / Environment Variable Management
+
 ## Cloud Platforms
+
 * Use platform-specific secret management (AWS Secrets Manager, GCP Secret Manager)
 * Manage separately for Development / Staging / Production
 * Never include in Git
 * Use `pydantic-settings` for typed environment variable management
 
 ```python
-# src/config.py
+## src/config.py
 from pydantic_settings import BaseSettings
 
 
@@ -491,12 +503,14 @@ class Settings(BaseSettings):
 ```
 
 ## GitHub
+
 * Manage with GitHub Actions Secrets
 * Rule: do not pass production environment variables to PR environments
 
 ---
 
-# 6. HTTPS / Communication Security
+## 6. HTTPS / Communication Security
+
 * **Enforce HTTPS at the load balancer / reverse proxy level**
 * Enforce wss:// when using WebSockets
 * API calls must use HTTPS only
@@ -504,23 +518,28 @@ class Settings(BaseSettings):
 
 ---
 
-# 7. External Service Integration Security
+## 7. External Service Integration Security
+
 ## Payment Services
+
 * Protect webhooks with signature verification
 * Always verify webhook signatures (see Section 3.3)
 * Strictly separate Client ID and Secret
 
 ## AI API / OAuth
+
 * Minimize OAuth authorization scopes
 * Use short-lived Access Tokens (encrypt Refresh Tokens for storage)
 
 ## RSS / Markdown
+
 * Validate external RSS URLs with Pydantic
 * Fetch and render with sanitization to prevent XSS (use `bleach` or `nh3` for HTML sanitization)
 
 ---
 
-# 8. Session Management
+## 8. Session Management
+
 * Cookie-based sessions (Secure / HttpOnly / SameSite)
 * Store encryption keys as Secrets even when using JWT mode
 * Do not include sensitive data in session information
@@ -528,7 +547,8 @@ class Settings(BaseSettings):
 
 ---
 
-# 9. Privacy Protection (Privacy by Design)
+## 9. Privacy Protection (Privacy by Design)
+
 ## Minimize Collected User Data
 
 * Collect only data with a clear purpose and necessity
@@ -536,17 +556,19 @@ class Settings(BaseSettings):
 * Recommend anonymization / pseudonymization
 
 ## Cookie & Tracking Management
+
 * Implement Cookie Policy / Consent Banner
 * Use anonymized analytics
 
 ## GDPR / Data Protection Law Compliance
+
 * Support data deletion requests (Right to Erasure)
 * Support user data export (Right to Access)
 * Maintain a privacy policy
 
 ---
 
-# 10. CI/CD Security
+## 10. CI/CD Security
 
 * Inject secrets securely in GitHub Actions
 * All PRs must go through review and CI
@@ -557,7 +579,7 @@ class Settings(BaseSettings):
 
 ---
 
-# 11. Security Audit / Automated Checks
+## 11. Security Audit / Automated Checks
 
 * Static analysis with `bandit` (Python security linter)
 * Vulnerability checks with `pip-audit` / `safety` / Snyk
@@ -565,7 +587,7 @@ class Settings(BaseSettings):
 
 ---
 
-# 12. Security Monitoring and Response
+## 12. Security Monitoring and Response
 
 * **Log collection**: Record authentication failures, authorization failures (IDOR, etc.), and Pydantic validation errors at ERROR/CRITICAL level in Sentry / CloudWatch
 * **Alert operations**:
@@ -577,7 +599,7 @@ class Settings(BaseSettings):
 
 ---
 
-# Summary
+## Summary
 
 * Authentication and authorization based on **Zero Trust principles**
 * **Require input validation for all inputs** (Pydantic)

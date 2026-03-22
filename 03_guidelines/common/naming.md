@@ -1,7 +1,9 @@
 # Naming Convention Guidelines
+
 This document defines **unified naming conventions** for Python applications.
 
 Scope:
+
 * SQLAlchemy models and field names
 * Database physical names (table and column names)
 * URL paths
@@ -14,11 +16,14 @@ Prioritizes readability, searchability, and scalability.
 
 ---
 
-# 1. General Principles
+## 1. General Principles
+
 ### Consistency
+
 Unify naming within each domain. Do not mix different naming conventions.
 
 ### English Naming Thresholds
+
 * **Variable/field names**: 1-3 words, max 30 characters (e.g., `created_at`, `order_item_count`)
 * **Function names**: verb + noun, 2-4 words, max 40 characters (e.g., `fetch_user_profile`, `calculate_total_price`)
 * **Class names**: 1-3 words describing the shape (e.g., `UserProfile`, `OrderSummary`)
@@ -27,7 +32,8 @@ Unify naming within each domain. Do not mix different naming conventions.
 
 ---
 
-# 2. SQLAlchemy Relationship Names
+## 2. SQLAlchemy Relationship Names
+
 * **Many-to-one / one-to-one → singular**
 * **One-to-many / many-to-many → plural (to clearly indicate collections)**
 * snake_case
@@ -47,7 +53,9 @@ class Order(Base):
 ```
 
 ---
-# 3. Database Physical Names
+
+## 3. Database Physical Names
+
 ## Table Names
 
 * **snake_case**
@@ -55,40 +63,44 @@ class Order(Base):
 
 Examples:
 
-```
+```text
 users
 blog_posts
 order_items
 ```
 
 ## Column Names
+
 * **snake_case**
 * Singular
 
 Examples:
 
-```
+```text
 created_at
 user_id
 is_active
 ```
 
 ## Constraint Names
+
 This guideline adopts the convention of prefixing with the constraint type (pk, fk, idx) for readability and searchability.
 
 Rationale:
+
 * **Constraints are visually grouped by type when listed**
 * **Easy to filter by prefix in tools and logs**
 * Can be more readable than the common "orders_user_id_fk" format
 
 Naming rules:
+
 * Primary key: `pk_<table>`
 * Foreign key: `fk_<table>_<ref_table>`
 * Index: `idx_<table>_<column>`
 
 Examples:
 
-```
+```text
 pk_users
 fk_orders_users
 idx_blog_posts_author_id
@@ -96,14 +108,15 @@ idx_blog_posts_author_id
 
 ---
 
-# 4. URL Path Naming (FastAPI Router)
+## 4. URL Path Naming (FastAPI Router)
+
 * **kebab-case**
 * Resources in **plural**
 * No verbs (REST)
 
 Examples:
 
-```
+```text
 /users
 /users/{user_id}
 /blog/posts
@@ -112,7 +125,8 @@ Examples:
 
 ---
 
-# 5. API Route Naming (/api)
+## 5. API Route Naming (/api)
+
 * Follow REST principles
 * Resource names in **plural**
 * Operations expressed through HTTP methods
@@ -120,7 +134,7 @@ Examples:
 
 Examples:
 
-```
+```text
 /api/users
 /api/users/{user_id}
 /api/orders
@@ -129,20 +143,22 @@ Examples:
 
 ---
 
-# 6. Service / Repository
+## 6. Service / Repository
+
 * `{domain}_service.py`
 * `{domain}_repository.py`
 
 Examples:
 
-```
+```text
 user_service.py
 order_repository.py
 ```
 
 ---
 
-# 7. Validation Schema (Pydantic)
+## 7. Validation Schema (Pydantic)
+
 * Schema class names: **PascalCase**
 * File names: **snake_case + _schema.py**
 
@@ -159,7 +175,7 @@ class CreateUserSchema(BaseModel):
 
 File name examples:
 
-```
+```text
 user_schema.py
 order_schema.py
 form_schema.py
@@ -167,21 +183,21 @@ form_schema.py
 
 ---
 
-# 8. CLI Commands (Typer)
+## 8. CLI Commands (Typer)
 
 * Command functions: `snake_case`
 * Command group files: `{domain}_commands.py`
 
 ---
 
-# 9. WebSocket / Realtime Names
+## 9. WebSocket / Realtime Names
 
 * Event names: **snake_case**
 * Channel names: **plural**
 
 ---
 
-# Summary
+## Summary
 
 | Target | Naming Convention |
 | --- | --- |

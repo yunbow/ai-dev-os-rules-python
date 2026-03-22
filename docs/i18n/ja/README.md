@@ -28,7 +28,7 @@ npx ai-dev-os init --rules python --plugin claude-code
 <details>
 <summary>手動セットアップ</summary>
 
-**submodule として追加**
+### submodule として追加
 
 ```bash
 cd /path/to/your-project
@@ -36,17 +36,17 @@ git submodule add https://github.com/yunbow/ai-dev-os-rules-python.git docs/ai-d
 git submodule update --init
 ```
 
-**テンプレートでセットアップ（Python CLI の場合）**
+### テンプレートでセットアップ（Python CLI の場合）
 
 ```bash
 bash docs/ai-dev-os/templates/python-cli/submodule-setup.sh
 ```
 
-**CLAUDE.md を編集**
+### CLAUDE.md を編集
 
 `templates/python-cli/CLAUDE.md.template` を `./CLAUDE.md` にコピーし、プロジェクト名と固有ガイドラインを記入します。
 
-**submodule の更新**
+### submodule の更新
 
 ```bash
 git submodule update --remote docs/ai-dev-os
@@ -78,7 +78,7 @@ git submodule update --remote docs/ai-dev-os
 <details>
 <summary>ディレクトリ構造</summary>
 
-```
+```text
 ai-dev-os/
 ├── docs/
 │   ├── operation-guide.md        # 運用・コントリビューションガイド
@@ -132,7 +132,7 @@ ai-dev-os/
 
 更新方針、フレームワーク追加手順、バージョニングの詳細は **[docs/operation-guide.md](../../../docs/operation-guide.md)** を参照してください。
 
-**更新頻度の目安**
+### 更新頻度の目安
 
 | セクション | 更新頻度 | 影響範囲 |
 |-----------|---------|---------|
@@ -142,7 +142,7 @@ ai-dev-os/
 | `03_guidelines/frameworks/` | 高頻度 | 該当 FW のプロジェクトのみ |
 | `templates/` | 中頻度 | 新規プロジェクトのみ |
 
-**フレームワークの追加**
+### フレームワークの追加
 
 新しいフレームワーク（例: FastAPI, Flask, Django）を追加する場合:
 

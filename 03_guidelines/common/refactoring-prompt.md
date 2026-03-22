@@ -6,7 +6,7 @@ A prompt template for making guideline-based decisions when improving existing c
 
 ## Prompt
 
-```
+```text
 Please refactor the following code.
 
 ## Refactoring Decision Criteria (02_decision-criteria/abstraction.md)

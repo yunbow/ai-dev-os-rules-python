@@ -6,7 +6,7 @@ A prompt template for making guideline-based design decisions during the design 
 
 ## Prompt
 
-```
+```text
 Please design the following feature.
 
 ## Design Process

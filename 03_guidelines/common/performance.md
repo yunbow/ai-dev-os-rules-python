@@ -11,16 +11,20 @@ This document covers only performance optimization items that **do not clearly o
 ---
 
 ## 1. Async / Concurrency Optimization
+
 ### Use async Endpoints by Default
-* Define FastAPI endpoints as `async def` whenever they perform I/O (HTTP calls, DB queries via async drivers, file I/O).
-* Use synchronous `def` only for CPU-bound endpoints — FastAPI runs them in a thread pool automatically.
+
+- Define FastAPI endpoints as `async def` whenever they perform I/O (HTTP calls, DB queries via async drivers, file I/O).
+- Use synchronous `def` only for CPU-bound endpoints — FastAPI runs them in a thread pool automatically.
 
 ### Avoid Blocking the Event Loop
+
 Decision rule for when to use async vs sync:
-* **Use `async def`** when the endpoint awaits I/O (database, HTTP, file reads)
-* **Use `def`** when the endpoint does CPU-bound work (FastAPI offloads to a thread pool)
-* Never call blocking I/O (e.g., `requests.get()`, synchronous DB drivers) inside an `async def` endpoint
-* If a library only offers synchronous I/O, use `asyncio.to_thread()` or `run_in_executor()`
+
+- **Use `async def`** when the endpoint awaits I/O (database, HTTP, file reads)
+- **Use `def`** when the endpoint does CPU-bound work (FastAPI offloads to a thread pool)
+- Never call blocking I/O (e.g., `requests.get()`, synchronous DB drivers) inside an `async def` endpoint
+- If a library only offers synchronous I/O, use `asyncio.to_thread()` or `run_in_executor()`
 
 ```python
 import asyncio
@@ -47,9 +51,11 @@ async def best_endpoint():
 ---
 
 ## 2. Connection Pooling
+
 ### Database Connection Pooling
-* Use SQLAlchemy's built-in connection pool (`pool_size`, `max_overflow`, `pool_recycle`).
-* For async, use `create_async_engine` with `AsyncSession`.
+
+- Use SQLAlchemy's built-in connection pool (`pool_size`, `max_overflow`, `pool_recycle`).
+- For async, use `create_async_engine` with `AsyncSession`.
 
 ```python
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -66,8 +72,9 @@ AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=F
 ```
 
 ### HTTP Client Connection Pooling
-* Reuse `httpx.AsyncClient` instances instead of creating new ones per request.
-* Create a shared client at startup and close it on shutdown.
+
+- Reuse `httpx.AsyncClient` instances instead of creating new ones per request.
+- Create a shared client at startup and close it on shutdown.
 
 ```python
 from contextlib import asynccontextmanager
@@ -83,6 +90,7 @@ async def lifespan(app):
 ---
 
 ## 3. Caching Strategy
+
 ### In-Memory Caching with `functools.lru_cache`
 
 ```python
@@ -140,8 +148,10 @@ async def get_public_data(response: Response):
 ---
 
 ## 4. Database Query Optimization
+
 ### Avoid N+1 Queries
-* Use `selectinload` / `joinedload` in SQLAlchemy to eagerly load relationships.
+
+- Use `selectinload` / `joinedload` in SQLAlchemy to eagerly load relationships.
 
 ```python
 from sqlalchemy.orm import selectinload
@@ -158,14 +168,17 @@ users = session.execute(
 ```
 
 ### Use Pagination Consistently
-* Always paginate large result sets with `limit` and `offset` (or cursor-based pagination).
+
+- Always paginate large result sets with `limit` and `offset` (or cursor-based pagination).
 
 ### Index Critical Columns
-* Add indexes for columns used in `WHERE`, `ORDER BY`, and `JOIN` clauses.
+
+- Add indexes for columns used in `WHERE`, `ORDER BY`, and `JOIN` clauses.
 
 ---
 
 ## 5. Serialization Optimization
+
 ### Use Pydantic Model Serialization Efficiently
 
 ```python
@@ -180,7 +193,8 @@ async def get_items():
 ```
 
 ### Avoid Excessive JSON Parsing
-* Use `orjson` for high-performance JSON serialization when handling large payloads.
+
+- Use `orjson` for high-performance JSON serialization when handling large payloads.
 
 ```python
 import orjson
@@ -192,6 +206,7 @@ app = FastAPI(default_response_class=ORJSONResponse)
 ---
 
 ## 6. Lazy Loading and Deferred Computation
+
 ### Lazy Module Imports for CLI Tools
 
 ```python
@@ -222,6 +237,7 @@ async def create_order(order: OrderCreate, background_tasks: BackgroundTasks):
 ---
 
 ## 7. Concurrency and Parallelism
+
 ### Use `asyncio.gather` for Concurrent I/O
 
 ```python
@@ -254,6 +270,7 @@ async def process_heavy_computation(data: list[float]) -> float:
 ---
 
 ## 8. Memory Optimization
+
 ### Use Generators for Large Datasets
 
 ```python
@@ -285,9 +302,12 @@ async def export_data():
 ---
 
 ## 9. Network Optimization
+
 ### Use HTTP/2 When Possible
+
 ### Reduce Excessive API Calls
-* Batch requests where possible; aggregate data on the server side.
+
+- Batch requests where possible; aggregate data on the server side.
 
 ### Use Response Compression
 
@@ -300,8 +320,10 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 ---
 
 ## 10. Startup Optimization
+
 ### Use FastAPI Lifespan for Initialization
-* Preload database connections, caches, and ML models during startup.
+
+- Preload database connections, caches, and ML models during startup.
 
 ```python
 from contextlib import asynccontextmanager
@@ -321,6 +343,7 @@ app = FastAPI(lifespan=lifespan)
 ---
 
 ## 11. Profiling
+
 ### cProfile / py-spy
 
 ```bash

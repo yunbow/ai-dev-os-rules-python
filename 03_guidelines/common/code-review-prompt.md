@@ -6,7 +6,7 @@ A prompt template for conducting guideline-based reviews on code changes.
 
 ## Prompt
 
-```
+```text
 Please perform a code review on the following changes.
 
 ## Review Perspectives

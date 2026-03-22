@@ -20,37 +20,44 @@ Este documento define las reglas operativas para actualizar y extender ai-dev-os
 ### 1.2 Reglas para actualizaciones
 
 **Común a todas las secciones:**
+
 - No incluir descripciones específicas del proyecto (nombres de servicios específicos, terminología de dominio específica)
 - Cuando se necesiten ejemplos concretos, usar ejemplos genéricos con marcadores de posición como `{domain}`, `{Payment Service}`, etc.
 - Después de los cambios, actualizar la estructura de directorios en `README.md` para reflejar el estado más reciente
 
 **Política de idiomas:**
+
 - `01_philosophy/` y `02_decision-criteria/` contienen **contenido de ejemplo en inglés** — después de clonar, **reescríbalos en su idioma nativo** (el pensamiento abstracto y los marcos de toma de decisiones se expresan mejor en el idioma nativo para preservar matices)
 - Todas las demás secciones (`03_guidelines/`, `04_ai-prompts/`, `templates/`) deben escribirse en **inglés** — para compatibilidad con IA y accesibilidad internacional
 - Las guías de operación multilingües se mantienen en `docs/i18n/` (JA, ZH, KO, ES)
 - Al agregar o actualizar contenido, siempre seguir esta política de idiomas
 
 **Actualizar `01_philosophy/`:**
+
 - Contiene contenido de ejemplo (inglés). Después de clonar, **reescríbalo en su idioma nativo**
 - Al agregar nuevos principios, verificar que no haya contradicciones con los principios existentes
 - Las eliminaciones y cambios importantes se tratan como versiones MAJOR
 - También verificar la consistencia con `02_decision-criteria/` y secciones inferiores
 
 **Actualizar `02_decision-criteria/`:**
+
 - Contiene contenido de ejemplo (inglés). Después de clonar, **reescríbalo en su idioma nativo**
 - Al cambiar criterios de decisión, verificar si las secciones correspondientes en `03_guidelines/` también necesitan actualizaciones
 - Al agregar nuevos ejes de decisión, verificar si existen directrices correspondientes
 
 **Actualizar `03_guidelines/`:**
+
 - Tener cuidado de no duplicar contenido entre `common/` y `frameworks/`
 - Revisar periódicamente si el contenido que debería ser compartido está escrito solo en archivos específicos del framework
 - Ver "2. Agregar directrices de framework" para más detalles
 
 **Actualizar `04_ai-prompts/`:**
+
 - Verificar que las rutas de directrices referenciadas en los prompts realmente existan
 - `skills/` debe mantener el formato SKILL.md de Claude Code (frontmatter + procedures)
 
 **Actualizar `templates/`:**
+
 - Las plantillas son para proyectos nuevos. No aplicar automáticamente a proyectos existentes
 - Los archivos de configuración (pyproject.toml, configuración de ruff, etc.) deben ser consistentes con los estándares de `03_guidelines/`
 
@@ -71,7 +78,7 @@ Condiciones para agregar nuevas directrices de framework:
 
 ### 2.2 Estructura de directorios
 
-```
+```text
 03_guidelines/frameworks/{framework-name}/
 ├── overview.md            # Definición del stack tecnológico (requerido)
 ├── project-structure.md   # Estructura de directorios (requerido)
@@ -118,12 +125,13 @@ Relación con las directrices correspondientes de `common/`:
 | Conceptos específicos del framework | Crear solo en el lado del framework |
 
 **Reglas de nomenclatura de archivos:**
+
 - Usar el mismo nombre cuando corresponda con `common/` (ej. `common/security.md` → `python-cli/security.md`)
 - Usar nombres descriptivos para conceptos específicos del framework (ej. `dependency-injection.md`, `cli-commands.md`)
 
 #### Step 4: Crear plantillas
 
-```
+```text
 templates/{framework-name}/
 ├── CLAUDE.md.template     # Plantilla CLAUDE.md (requerido)
 ├── submodule-setup.sh     # Script de configuración (recomendado)
@@ -138,17 +146,19 @@ templates/{framework-name}/
 
 ### 2.4 Principio de separación de responsabilidades con common/
 
-```
+```text
 common/          → "Qué hacer" (reglas independientes del lenguaje/FW)
 frameworks/xxx/  → "Cómo implementar" (patrones de implementación específicos del FW)
 ```
 
-**Ejemplo: Validación**
+### Ejemplo: Validación
+
 - `common/validation.md` → "La validación del lado del servidor es obligatoria" "Se recomienda Pydantic"
 - `frameworks/python-cli/validation.md` → "Patrón de validación con modelos Pydantic y análisis de argumentos Typer"
 - `frameworks/fastapi/validation.md` → "Validación del cuerpo de solicitud con modelos Pydantic e inyección de dependencias"
 
-**Ejemplo: Manejo de errores**
+### Ejemplo: Manejo de errores
+
 - `common/error-handling.md` → "Clasificación de errores" "Principios para la visualización al usuario"
 - `frameworks/python-cli/error-handling.md` → "Jerarquía de excepciones personalizadas con códigos de salida Typer"
 
@@ -187,6 +197,7 @@ Los siguientes se tratan como cambios incompatibles que requieren una versión M
 - Abolición o inversión de reglas existentes
 
 **Al mover archivos:**
+
 1. Dejar un archivo de redirección de una línea en la ruta anterior: "Moved to: `new-path`"
 2. Eliminar el archivo de redirección en la siguiente versión MAJOR
 

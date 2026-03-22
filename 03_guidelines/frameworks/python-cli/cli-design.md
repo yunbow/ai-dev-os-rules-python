@@ -6,13 +6,13 @@ This document defines how to design subcommands, options, arguments, and user in
 
 ---
 
-# 1. Subcommand Design
+## 1. Subcommand Design
 
 ## 1.1 One Command = One Responsibility
 
 Each subcommand should have a single, well-defined purpose.
 
-```
+```text
 my-tool analyze   # Run analysis pipeline
 my-tool resume    # Resume interrupted analysis
 my-tool compare   # Compare multiple results
@@ -77,7 +77,7 @@ def clean(...) -> None:
 
 ---
 
-# 2. Option & Argument Design
+## 2. Option & Argument Design
 
 ## 2.1 Option Conventions
 
@@ -155,7 +155,7 @@ def analyze(
 
 ---
 
-# 3. Input Validation
+## 3. Input Validation
 
 ## 3.1 Fail Fast
 
@@ -207,11 +207,12 @@ def analyze(
 
 ---
 
-# 4. Help & Documentation
+## 4. Help & Documentation
 
 ## 4.1 Auto-Generated Help
 
 Typer generates `--help` automatically from docstrings and `help=` parameters. Ensure:
+
 - Every command has a docstring
 - Every option/argument has `help=`
 - Default values are specified (shown in help)
@@ -246,7 +247,7 @@ app = typer.Typer(
 
 ---
 
-# 5. Output Design
+## 5. Output Design
 
 ## 5.1 Output Channels
 
@@ -258,10 +259,10 @@ app = typer.Typer(
 This separation allows piping: `my-tool analyze --url ... > result.json`
 
 ```python
-# Data to stdout
+## Data to stdout
 typer.echo(json.dumps(result))
 
-# Diagnostics to stderr
+## Diagnostics to stderr
 typer.echo("Processing...", err=True)
 ```
 
@@ -287,7 +288,7 @@ with typer.progressbar(items, label="Processing") as progress:
 
 Or step-based:
 
-```
+```text
 [1/4] Collecting data...
 [2/4] Preprocessing...
 [3/4] Summarizing... (15.2s)
@@ -296,7 +297,7 @@ Or step-based:
 
 ---
 
-# 6. Interactive vs Non-Interactive
+## 6. Interactive vs Non-Interactive
 
 ## 6.1 Detection
 
@@ -326,7 +327,7 @@ else:
 
 ---
 
-# 7. Summary
+## 7. Summary
 
 - **One subcommand = one responsibility**
 - **Fail fast** with clear error messages at the CLI layer

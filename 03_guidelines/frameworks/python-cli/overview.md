@@ -3,9 +3,11 @@
 > **Note:** The technology stack below is a sample configuration. Replace libraries based on your project's requirements. Files marked with `[Replaceable]` in this directory contain library-specific patterns — update the corresponding files when switching libraries.
 
 ## Purpose
+
 This is a guideline for designing robust, maintainable CLI tools with Python, balancing usability, extensibility, testability, and developer productivity.
 
 ## Technology Stack
+
 - Python 3.12+
   - CLI Argument Parsing (type-hint driven)
   - Subcommand Routing
@@ -29,6 +31,7 @@ This is a guideline for designing robust, maintainable CLI tools with Python, ba
 | Logging | structlog | logging (stdlib), loguru | — |
 
 ## Basic Principles
+
 - Single-responsibility subcommands with clear input/output contracts
 - Fail fast with meaningful error messages and exit codes
 - Support both interactive and non-interactive (CI) environments

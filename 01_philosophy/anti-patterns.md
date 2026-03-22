@@ -1,4 +1,5 @@
 $NOTE
+
 # Anti-Patterns
 
 This defines repeatedly observed "do not do this" patterns.

@@ -5,10 +5,12 @@
 ## コントリビューション方法
 
 ### Issue の報告
+
 - [GitHub Issues](https://github.com/yunbow/ai-dev-os-rules-python/issues) を使用してください
 - 影響を受けるガイドラインファイルとルールを明記してください
 
 ### Pull Request
+
 1. リポジトリをフォーク
 2. フィーチャーブランチを作成
 3. 変更を実施
@@ -35,6 +37,7 @@
 4. 例外: `code.md` は言語固有の例を含む場合があります — ルールは同期し、例は調整してください
 
 **差分の簡易チェック:**
+
 ```bash
 diff -rq 03_guidelines/common/ ../ai-dev-os-rules-typescript/03_guidelines/common/
 ```

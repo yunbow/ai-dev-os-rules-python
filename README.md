@@ -62,7 +62,7 @@ git submodule update --remote docs/ai-dev-os
 | L2 — Decision Criteria | `02_decision-criteria/` | Abstraction, tech selection, architecture, errors, security |
 | L3 — Common Guidelines | `03_guidelines/common/` | 13 rules: code, naming, validation, errors, logging, security, testing, etc. |
 | L3 — Framework Guidelines | `03_guidelines/frameworks/` | [FastAPI](03_guidelines/frameworks/fastapi/README.md), [Python CLI](03_guidelines/frameworks/python-cli/README.md) |
-| Templates | `templates/` | [Python CLI scaffolding](templates/python-cli/README.md) |
+| Templates | `templates/` | [Python CLI scaffolding](templates/README.md) |
 
 ## Specificity Cascade
 
@@ -122,7 +122,7 @@ ai-dev-os/
 │
 │
 └── templates/                    # Project Templates [EN]
-    └── python-cli/               #     → [README.md](templates/python-cli/README.md)
+    └── python-cli/               #     → [README.md](templates/README.md)
 ```
 
 </details>

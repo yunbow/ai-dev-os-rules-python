@@ -61,8 +61,8 @@ git submodule update --remote docs/ai-dev-os
 | L1 — Filosofía | `01_philosophy/` | Principios, modelos mentales, antipatrones |
 | L2 — Criterios de decisión | `02_decision-criteria/` | Abstracción, selección tecnológica, arquitectura, errores, seguridad |
 | L3 — Directrices comunes | `03_guidelines/common/` | 13 reglas: código, nomenclatura, validación, errores, registro, seguridad, pruebas, etc. |
-| L3 — Directrices del framework | `03_guidelines/frameworks/` | [FastAPI](03_guidelines/frameworks/fastapi/README.md), [Python CLI](03_guidelines/frameworks/python-cli/README.md) |
-| Plantillas | `templates/` | [Scaffolding de Python CLI](templates/python-cli/README.md) |
+| L3 — Directrices del framework | `03_guidelines/frameworks/` | [FastAPI](../../../03_guidelines/frameworks/fastapi/README.md), [Python CLI](../../../03_guidelines/frameworks/python-cli/README.md) |
+| Plantillas | `templates/` | [Scaffolding de Python CLI](../../../templates/README.md) |
 
 ## Specificity Cascade
 
@@ -117,12 +117,12 @@ ai-dev-os/
 │   │   └── i18n.md               #     Internacionalización
 │   │
 │   └── frameworks/               #   Específicos del framework (ver cada README.md)
-│       ├── fastapi/              #     → [README.md](03_guidelines/frameworks/fastapi/README.md)
-│       └── python-cli/           #     → [README.md](03_guidelines/frameworks/python-cli/README.md)
+│       ├── fastapi/              #     → [README.md](../../../03_guidelines/frameworks/fastapi/README.md)
+│       └── python-cli/           #     → [README.md](../../../03_guidelines/frameworks/python-cli/README.md)
 │
 │
 └── templates/                    # Plantillas de proyecto [Inglés]
-    └── python-cli/               #     → [README.md](templates/python-cli/README.md)
+    └── python-cli/               #     → [README.md](../../../templates/README.md)
 ```
 
 </details>

@@ -61,8 +61,8 @@ git submodule update --remote docs/ai-dev-os
 | L1 — 설계 철학 | `01_philosophy/` | 원칙, 멘탈 모델, 안티패턴 |
 | L2 — 판단 기준 | `02_decision-criteria/` | 추상화, 기술 선정, 아키텍처, 에러, 보안 |
 | L3 — 공통 가이드라인 | `03_guidelines/common/` | 13개 규칙: 코드, 명명, 유효성 검사, 에러, 로깅, 보안, 테스트 등 |
-| L3 — FW 가이드라인 | `03_guidelines/frameworks/` | [FastAPI](03_guidelines/frameworks/fastapi/README.md), [Python CLI](03_guidelines/frameworks/python-cli/README.md) |
-| 템플릿 | `templates/` | [Python CLI 스캐폴딩](templates/python-cli/README.md) |
+| L3 — FW 가이드라인 | `03_guidelines/frameworks/` | [FastAPI](../../../03_guidelines/frameworks/fastapi/README.md), [Python CLI](../../../03_guidelines/frameworks/python-cli/README.md) |
+| 템플릿 | `templates/` | [Python CLI 스캐폴딩](../../../templates/README.md) |
 
 ## Specificity Cascade
 
@@ -117,12 +117,12 @@ ai-dev-os/
 │   │   └── i18n.md               #     국제화
 │   │
 │   └── frameworks/               #   프레임워크별 (각 README.md 참조)
-│       ├── fastapi/              #     → [README.md](03_guidelines/frameworks/fastapi/README.md)
-│       └── python-cli/           #     → [README.md](03_guidelines/frameworks/python-cli/README.md)
+│       ├── fastapi/              #     → [README.md](../../../03_guidelines/frameworks/fastapi/README.md)
+│       └── python-cli/           #     → [README.md](../../../03_guidelines/frameworks/python-cli/README.md)
 │
 │
 └── templates/                    # 프로젝트 템플릿 [영어]
-    └── python-cli/               #     → [README.md](templates/python-cli/README.md)
+    └── python-cli/               #     → [README.md](../../../templates/README.md)
 ```
 
 </details>
